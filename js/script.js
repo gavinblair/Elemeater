@@ -125,10 +125,10 @@ $(document).ready(function(){
 		//center the tile
 		$("#tile"+i).css("top", (300+pos.x)+"px").css("left", (300+pos.y)+"px");
 		//now move it based on pos.y and pos.x
-		if(i == 0) {
+		if(i == Math.floor(SNAKES_IN_RING/2)) {
 			//big tail
 			$("#tile"+i).addSprite("snake"+i, {animation: snakeanimations.bigtail, width: 100, height: 100});
-		} else if (i == 1) {
+		} else if (i == Math.floor(SNAKES_IN_RING/2)+1) {
 			//big head
 			$("#tile"+i).addSprite("snake"+i, {animation: snakeanimations.bighead, width: 100, height: 100});
 		} else {
