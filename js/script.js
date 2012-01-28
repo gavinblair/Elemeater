@@ -136,7 +136,7 @@ function BuildRing()
 		var leftType = 0;
 		var rightType = 0;
 
-		while (left == 0 && right == 0)
+		while (leftType == 0 && rightType == 0)
 		{
 			leftType = Math.floor(Math.random()*4);
 			rightType = Math.floor(Math.random()*4);
