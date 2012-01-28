@@ -45,16 +45,30 @@ $(document).ready(function(){
 	});
 	//offsety*100 will be a different snake
 	
-	//single snake
-	var singlesnake = new $.gameQuery.Animation({ 
+	var watersnake = new $.gameQuery.Animation({ 
 		imageURL: "img/singles.png",
 		numberOfFrame: 4,
 		delta: 70,
 		rate: 150,
-		offsety: 0,
+		offsety: 0*41,
 		type: $.gameQuery.ANIMATION_HORIZONTAL
 	});
-	//offsety*41 will be a different snake //do we need to multiply this?
+	var firesnake = new $.gameQuery.Animation({ 
+		imageURL: "img/singles.png",
+		numberOfFrame: 4,
+		delta: 70,
+		rate: 150,
+		offsety: 1*41,
+		type: $.gameQuery.ANIMATION_HORIZONTAL
+	});
+	var earthsnake = new $.gameQuery.Animation({ 
+		imageURL: "img/singles.png",
+		numberOfFrame: 4,
+		delta: 70,
+		rate: 150,
+		offsety: 2*41,
+		type: $.gameQuery.ANIMATION_HORIZONTAL
+	});
 	
 	//exploding snake
 	
@@ -62,37 +76,55 @@ $(document).ready(function(){
 	$.playground().addGroup("ring", {
 		width: PLAYGROUND_WIDTH, height: PLAYGROUND_HEIGHT
 	});
-	$.playground().addSprite("singlesnake", {animation: singlesnake, width: 70, height: 41});
-	
 	
 	
 	$.playground().startGame(function() { });
 	
 	var tiles = new Array();
-	/*
+	
 	for(var i  = 0; i <= SNAKES_IN_RING; i++) {
+		var pos = getPosOfSnake(i);
+		$("#ring").addGroup("tile"+i, { height: 100, width: 100});	
 		if(i == 0) {
 			//big tail
-			tiles[i] = new $.gameQuery.Animation({imageURL: "img/bigtail.png"});
+			$("#tile"+i).addSprite("snake"+i, {animation: bigtail, width: 100, height: 100});
+			//$("#tile"+i).css("top", pos.y).css("left", pos.x);
 		} else if (i == 1) {
 			//big head
-			tiles[i] = new $.gameQuery.Animation({imageURL: "img/bighead.png"});
+			$("#tile"+i).addSprite("snake"+i, {animation: bighead, width: 100, height: 100});
 		} else {
 			//random tile
 			var snaketype = Math.floor(Math.random()*8);
 			//we'll probably want to be able to weight it - single snakes should be more probably than double snakes
-			if(snaketype <= 2) {
-				//single snake
-				tiles[i] = new $.gameQuery.Animation({imageURL: "img/singles.png"});
-			} else {
-				//double snake
-				tiles[i] = new $.gameQuery.Animation({imageURL: "img/doubles.png"});
+			
+			var thesnake;
+			var h;
+			var w;
+			switch(snaketype) {
+				case 0:
+					thesnake = watersnake;
+					h = 41;
+					w = 70;
+					break;
+				case 1:
+					thesnake = firesnake;
+					h = 41;
+					w = 70;
+					break;
+				case 2:
+					thesnake = earthsnake;
+					h = 41;
+					w = 70;
+					break;
+				
 			}
+			$("#tile"+i).addSprite("snake"+i, {animation: thesnake, width: w, height: h});
+			
 		}
-		$("#playground").addSprite("tile"+i,{animation: tiles[i]})
+		
 		
 	}
-	
+	/*
 	// this sets the id of the loading bar:
 	$().setLoadBar("loadingBar", 400);
 	
