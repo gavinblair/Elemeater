@@ -46,14 +46,15 @@ $(document).ready(function(){
 	//offsety*100 will be a different snake
 	
 	//single snake
-	var doublesnake = new $.gameQuery.Animation({ 
-		imageURL: "img/doubles.png",
-		numberOfFrame: 1,
+	var singlesnake = new $.gameQuery.Animation({ 
+		imageURL: "img/singles.png",
+		numberOfFrame: 4,
 		delta: 70,
-		rate: 1,
+		rate: 150,
+		offsety: 0,
 		type: $.gameQuery.ANIMATION_HORIZONTAL
 	});
-	//offsety*70 will be a different snake //do we need to multiply this?
+	//offsety*41 will be a different snake //do we need to multiply this?
 	
 	//exploding snake
 	
@@ -61,11 +62,14 @@ $(document).ready(function(){
 	$.playground().addGroup("ring", {
 		width: PLAYGROUND_WIDTH, height: PLAYGROUND_HEIGHT
 	});
-	$.playground().addSprite("doublesnake", {animation: doublesnake, width: 100, height: 100});
-	$.playground().startGame();
+	$.playground().addSprite("singlesnake", {animation: singlesnake, width: 70, height: 41});
+	
+	
+	
+	$.playground().startGame(function() { });
 	
 	var tiles = new Array();
-	
+	/*
 	for(var i  = 0; i <= SNAKES_IN_RING; i++) {
 		if(i == 0) {
 			//big tail
@@ -97,7 +101,7 @@ $(document).ready(function(){
 		$.playground().startGame(function(){
 			$("#welcomeScreen").fadeTo(1000,0,function(){$(this).remove();});
 		});
-	});
+	});*/
 });
 
 // Function to restart the game:

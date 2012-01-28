@@ -225,7 +225,10 @@ body {
 h1 {
 	font-family: monospace;
 }
-
+#playground {
+	position: relative;
+	border: 1px solid black;
+}
 
 
 
