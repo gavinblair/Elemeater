@@ -3,6 +3,8 @@
 */
 
 $(document).ready(function(){
+
+	$("#playground").playground({height: PLAYGROUND_HEIGHT, width: PLAYGROUND_WIDTH});
 	
 	var tiles = new Array();
 	
@@ -25,18 +27,9 @@ $(document).ready(function(){
 				tiles[i] = new $.gameQuery.Animation({imageURL: "img/doubles.png"});
 			}
 		}
-		
+		$("#playground").addSprite("tile"+i,{animation: tiles[i]})
 		
 	}
-	
-	$("#playground").playground({height: PLAYGROUND_HEIGHT, width: PLAYGROUND_WIDTH})
-          .addSprite("sprite1",{animation: animation1})
-          .addGroup("groupA")
-            .addSprite("sprite2",{animation: animation2}).end()
-          .addSprite("sprite3",{animation: animation3})
-          .addGroup("groupB",{overflow: hidden})
-            .addSprite("sprite4",{animation: animation4});
-	
 });
 
 
