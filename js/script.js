@@ -3,7 +3,104 @@
 */
 
 var snakeToSwap = -1;
-var tiles = new Array();
+var ringTiles = new Array();
+
+var snakeanimations = {
+	'bigtail' : new $.gameQuery.Animation({ 
+		imageURL: "img/bigtail.png",
+		numberOfFrame: 1,
+		delta: 100,
+		rate: 1,
+		type: $.gameQuery.ANIMATION_VERTICAL
+	}),
+	'bighead' : new $.gameQuery.Animation({ 
+		imageURL: "img/bighead.png",
+		numberOfFrame: 1,
+		delta: 100,
+		rate: 1,
+		type: $.gameQuery.ANIMATION_VERTICAL
+	}),
+	'bigbody' : new $.gameQuery.Animation({ 
+		imageURL: "img/bigbody.png",
+		numberOfFrame: 1,
+		delta: 100,
+		rate: 1,
+		type: $.gameQuery.ANIMATION_VERTICAL
+	}),
+	'water' : new $.gameQuery.Animation({ 
+		imageURL: "img/singles.png",
+		numberOfFrame: 4,
+		delta: 70,
+		rate: 150+Math.floor(Math.random()*10),
+		offsety: 0*41,
+		type: $.gameQuery.ANIMATION_HORIZONTAL
+	}),
+	'fire' : new $.gameQuery.Animation({ 
+		imageURL: "img/singles.png",
+		numberOfFrame: 4,
+		delta: 70,
+		rate: 150+Math.floor(Math.random()*10),
+		offsety: 1*41,
+		type: $.gameQuery.ANIMATION_HORIZONTAL
+	}),
+	'earth' : new $.gameQuery.Animation({ 
+		imageURL: "img/singles.png",
+		numberOfFrame: 4,
+		delta: 70,
+		rate: 150+Math.floor(Math.random()*10),
+		offsety: 2*41,
+		type: $.gameQuery.ANIMATION_HORIZONTAL
+	}),
+	'waterwater' : new $.gameQuery.Animation({ 
+		imageURL: "img/doubles.png",
+		numberOfFrame: 4,
+		delta: 100,
+		rate: 150+Math.floor(Math.random()*10),
+		offsety: 0*56,
+		type: $.gameQuery.ANIMATION_HORIZONTAL
+	}),
+	'waterfire' : new $.gameQuery.Animation({ 
+		imageURL: "img/doubles.png",
+		numberOfFrame: 4,
+		delta: 100,
+		rate: 150+Math.floor(Math.random()*10),
+		offsety: 1*56,
+		type: $.gameQuery.ANIMATION_HORIZONTAL
+	}),
+	'waterearth' : new $.gameQuery.Animation({ 
+		imageURL: "img/doubles.png",
+		numberOfFrame: 4,
+		delta: 100,
+		rate: 150+Math.floor(Math.random()*10),
+		offsety: 2*56,
+		type: $.gameQuery.ANIMATION_HORIZONTAL
+	}),
+	'firefire' : new $.gameQuery.Animation({ 
+		imageURL: "img/doubles.png",
+		numberOfFrame: 4,
+		delta: 100,
+		rate: 150+Math.floor(Math.random()*10),
+		offsety: 3*56,
+		type: $.gameQuery.ANIMATION_HORIZONTAL
+	}),
+	'fireearth' : new $.gameQuery.Animation({ 
+		imageURL: "img/doubles.png",
+		numberOfFrame: 4,
+		delta: 100,
+		rate: 150+Math.floor(Math.random()*10),
+		offsety: 4*56,
+		type: $.gameQuery.ANIMATION_HORIZONTAL
+	}),
+	'earthearth' : new $.gameQuery.Animation({ 
+		imageURL: "img/doubles.png",
+		numberOfFrame: 4,
+		delta: 100,
+		rate: 150+Math.floor(Math.random()*10),
+		offsety: 5*56,
+		type: $.gameQuery.ANIMATION_HORIZONTAL
+	}),
+};
+
 
 function setSnakeRotation(idx)
 {
@@ -32,122 +129,25 @@ function setSnakeDoubleSizeRotation(idx)
 	snake.css("-o-transform", "rotate("+rot+"deg) scale(2.0, 2.0)"); /* Opera */
 }
 
-$(document).ready(function(){
+// first time
+function BuildRing()
+{
+	for(var i  = 0; i < SNAKES_IN_RING; i++) {
+		var leftType = 0;
+		var rightType = 0;
 
-	$("#playground").playground({height: PLAYGROUND_HEIGHT, width: PLAYGROUND_WIDTH});
-	
-	//define animations
-	
-	var snakeanimations = {
-		'bigtail' : new $.gameQuery.Animation({ 
-			imageURL: "img/bigtail.png",
-			numberOfFrame: 1,
-			delta: 100,
-			rate: 1,
-			type: $.gameQuery.ANIMATION_VERTICAL
-		}),
-		'bighead' : new $.gameQuery.Animation({ 
-			imageURL: "img/bighead.png",
-			numberOfFrame: 1,
-			delta: 100,
-			rate: 1,
-			type: $.gameQuery.ANIMATION_VERTICAL
-		}),
-		'bigbody' : new $.gameQuery.Animation({ 
-			imageURL: "img/bigbody.png",
-			numberOfFrame: 1,
-			delta: 100,
-			rate: 1,
-			type: $.gameQuery.ANIMATION_VERTICAL
-		}),
-		'water' : new $.gameQuery.Animation({ 
-			imageURL: "img/singles.png",
-			numberOfFrame: 4,
-			delta: 70,
-			rate: 150+Math.floor(Math.random()*10),
-			offsety: 0*41,
-			type: $.gameQuery.ANIMATION_HORIZONTAL
-		}),
-		'fire' : new $.gameQuery.Animation({ 
-			imageURL: "img/singles.png",
-			numberOfFrame: 4,
-			delta: 70,
-			rate: 150+Math.floor(Math.random()*10),
-			offsety: 1*41,
-			type: $.gameQuery.ANIMATION_HORIZONTAL
-		}),
-		'earth' : new $.gameQuery.Animation({ 
-			imageURL: "img/singles.png",
-			numberOfFrame: 4,
-			delta: 70,
-			rate: 150+Math.floor(Math.random()*10),
-			offsety: 2*41,
-			type: $.gameQuery.ANIMATION_HORIZONTAL
-		}),
-		'waterwater' : new $.gameQuery.Animation({ 
-			imageURL: "img/doubles.png",
-			numberOfFrame: 4,
-			delta: 100,
-			rate: 150+Math.floor(Math.random()*10),
-			offsety: 0*56,
-			type: $.gameQuery.ANIMATION_HORIZONTAL
-		}),
-		'waterfire' : new $.gameQuery.Animation({ 
-			imageURL: "img/doubles.png",
-			numberOfFrame: 4,
-			delta: 100,
-			rate: 150+Math.floor(Math.random()*10),
-			offsety: 1*56,
-			type: $.gameQuery.ANIMATION_HORIZONTAL
-		}),
-		'waterearth' : new $.gameQuery.Animation({ 
-			imageURL: "img/doubles.png",
-			numberOfFrame: 4,
-			delta: 100,
-			rate: 150+Math.floor(Math.random()*10),
-			offsety: 2*56,
-			type: $.gameQuery.ANIMATION_HORIZONTAL
-		}),
-		'firefire' : new $.gameQuery.Animation({ 
-			imageURL: "img/doubles.png",
-			numberOfFrame: 4,
-			delta: 100,
-			rate: 150+Math.floor(Math.random()*10),
-			offsety: 3*56,
-			type: $.gameQuery.ANIMATION_HORIZONTAL
-		}),
-		'fireearth' : new $.gameQuery.Animation({ 
-			imageURL: "img/doubles.png",
-			numberOfFrame: 4,
-			delta: 100,
-			rate: 150+Math.floor(Math.random()*10),
-			offsety: 4*56,
-			type: $.gameQuery.ANIMATION_HORIZONTAL
-		}),
-		'earthearth' : new $.gameQuery.Animation({ 
-			imageURL: "img/doubles.png",
-			numberOfFrame: 4,
-			delta: 100,
-			rate: 150+Math.floor(Math.random()*10),
-			offsety: 5*56,
-			type: $.gameQuery.ANIMATION_HORIZONTAL
-		}),
-	};
-	
-	
-	//exploding snake
-	
-	//add the ring group
-	$.playground().addGroup("ring", {
-		width: PLAYGROUND_WIDTH, height: PLAYGROUND_HEIGHT
-	});
-	
-	
-	$.playground().startGame(function() { });
-	
-	
-	var rotationAngle = 360 / SNAKES_IN_RING;
-	
+		while (left == 0 && right == 0)
+		{
+			leftType = Math.floor(Math.random()*4);
+			rightType = Math.floor(Math.random()*4);
+		}
+
+		ringTiles.push({left:leftType, right:rightType});
+	}
+}
+
+function RebuildRing()
+{
 	for(var i  = 0; i < SNAKES_IN_RING; i++) {
 		var pos = getPosOfSnake(i);
 		$("#ring").addGroup("tile"+i, { height: 100, width: 100});	
@@ -239,14 +239,23 @@ $(document).ready(function(){
 			$("#tile"+i).attr("rel", i).addClass("tile");
 
 			setSnakeRotation(i);
-			
-			tiles.push({
-				animation: thesnake,
-				left: left,
-				right: right
-			});
 		}
 	}
+}
+
+$(document).ready(function(){
+
+	$("#playground").playground({height: PLAYGROUND_HEIGHT, width: PLAYGROUND_WIDTH});
+	
+	//add the ring group
+	$.playground().addGroup("ring", {
+		width: PLAYGROUND_WIDTH, height: PLAYGROUND_HEIGHT
+	});
+	
+	
+	$.playground().startGame(function() { });
+
+	RebuildRing();
 	
 	$(".tile").click(function(){
 		if (snakeToSwap == -1)
