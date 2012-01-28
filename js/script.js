@@ -8,67 +8,102 @@ $(document).ready(function(){
 	
 	//define animations
 	
-	//big tail
-	var bigtail = new $.gameQuery.Animation({ 
-		imageURL: "img/bigtail.png",
-		numberOfFrame: 1,
-		delta: 100,
-		rate: 1,
-		type: $.gameQuery.ANIMATION_VERTICAL
-	});
+	var snakeanimations = {
+		'bigtail' : new $.gameQuery.Animation({ 
+			imageURL: "img/bigtail.png",
+			numberOfFrame: 1,
+			delta: 100,
+			rate: 1,
+			type: $.gameQuery.ANIMATION_VERTICAL
+		}),
+		'bighead' : new $.gameQuery.Animation({ 
+			imageURL: "img/bighead.png",
+			numberOfFrame: 1,
+			delta: 100,
+			rate: 1,
+			type: $.gameQuery.ANIMATION_VERTICAL
+		}),
+		'bigbody' : new $.gameQuery.Animation({ 
+			imageURL: "img/bigbody.png",
+			numberOfFrame: 1,
+			delta: 100,
+			rate: 1,
+			type: $.gameQuery.ANIMATION_VERTICAL
+		}),
+		'water' : new $.gameQuery.Animation({ 
+			imageURL: "img/singles.png",
+			numberOfFrame: 4,
+			delta: 70,
+			rate: 150,
+			offsety: 0*41,
+			type: $.gameQuery.ANIMATION_HORIZONTAL
+		}),
+		'fire' : new $.gameQuery.Animation({ 
+			imageURL: "img/singles.png",
+			numberOfFrame: 4,
+			delta: 70,
+			rate: 150,
+			offsety: 1*41,
+			type: $.gameQuery.ANIMATION_HORIZONTAL
+		}),
+		'earth' : new $.gameQuery.Animation({ 
+			imageURL: "img/singles.png",
+			numberOfFrame: 4,
+			delta: 70,
+			rate: 150,
+			offsety: 2*41,
+			type: $.gameQuery.ANIMATION_HORIZONTAL
+		}),
+		'waterwater' : new $.gameQuery.Animation({ 
+			imageURL: "img/doubles.png",
+			numberOfFrame: 1,
+			delta: 100,
+			rate: 1,
+			offsety: 0*56,
+			type: $.gameQuery.ANIMATION_HORIZONTAL
+		}),
+		'waterfire' : new $.gameQuery.Animation({ 
+			imageURL: "img/doubles.png",
+			numberOfFrame: 1,
+			delta: 100,
+			rate: 1,
+			offsety: 1*56,
+			type: $.gameQuery.ANIMATION_HORIZONTAL
+		}),
+		'waterearth' : new $.gameQuery.Animation({ 
+			imageURL: "img/doubles.png",
+			numberOfFrame: 1,
+			delta: 100,
+			rate: 1,
+			offsety: 2*56,
+			type: $.gameQuery.ANIMATION_HORIZONTAL
+		}),
+		'firefire' : new $.gameQuery.Animation({ 
+			imageURL: "img/doubles.png",
+			numberOfFrame: 1,
+			delta: 100,
+			rate: 1,
+			offsety: 3*56,
+			type: $.gameQuery.ANIMATION_HORIZONTAL
+		}),
+		'waterearth' : new $.gameQuery.Animation({ 
+			imageURL: "img/doubles.png",
+			numberOfFrame: 1,
+			delta: 100,
+			rate: 1,
+			offsety: 4*56,
+			type: $.gameQuery.ANIMATION_HORIZONTAL
+		}),
+		'earthearth' : new $.gameQuery.Animation({ 
+			imageURL: "img/doubles.png",
+			numberOfFrame: 1,
+			delta: 100,
+			rate: 1,
+			offsety: 5*56,
+			type: $.gameQuery.ANIMATION_HORIZONTAL
+		}),
+	};
 	
-	//big head
-	var bighead = new $.gameQuery.Animation({ 
-		imageURL: "img/bighead.png",
-		numberOfFrame: 1,
-		delta: 100,
-		rate: 1,
-		type: $.gameQuery.ANIMATION_VERTICAL
-	});
-	
-	//big body
-	var bigbody = new $.gameQuery.Animation({ 
-		imageURL: "img/bigbody.png",
-		numberOfFrame: 1,
-		delta: 100,
-		rate: 1,
-		type: $.gameQuery.ANIMATION_VERTICAL
-	});
-	
-	//double snake
-	var doublesnake = new $.gameQuery.Animation({ 
-		imageURL: "img/doubles.png",
-		numberOfFrame: 1,
-		delta: 100,
-		rate: 1,
-		type: $.gameQuery.ANIMATION_HORIZONTAL
-	});
-	//offsety*100 will be a different snake
-	
-	var watersnake = new $.gameQuery.Animation({ 
-		imageURL: "img/singles.png",
-		numberOfFrame: 4,
-		delta: 70,
-		rate: 150,
-		offsety: 0*41,
-		type: $.gameQuery.ANIMATION_HORIZONTAL
-	});
-	var firesnake = new $.gameQuery.Animation({ 
-		imageURL: "img/singles.png",
-		numberOfFrame: 4,
-		delta: 70,
-		rate: 150,
-		offsety: 1*41,
-		type: $.gameQuery.ANIMATION_HORIZONTAL
-	});
-	var earthsnake = new $.gameQuery.Animation({ 
-		imageURL: "img/singles.png",
-		numberOfFrame: 4,
-		delta: 70,
-		rate: 150,
-		offsety: 2*41,
-		type: $.gameQuery.ANIMATION_HORIZONTAL
-	});
 	
 	//exploding snake
 	
@@ -90,10 +125,10 @@ $(document).ready(function(){
 		//now move it based on pos.y and pos.x
 		if(i == 0) {
 			//big tail
-			$("#tile"+i).addSprite("snake"+i, {animation: bigtail, width: 100, height: 100});
+			$("#tile"+i).addSprite("snake"+i, {animation: snakeanimations.bigtail, width: 100, height: 100});
 		} else if (i == 1) {
 			//big head
-			$("#tile"+i).addSprite("snake"+i, {animation: bighead, width: 100, height: 100});
+			$("#tile"+i).addSprite("snake"+i, {animation: snakeanimations.bighead, width: 100, height: 100});
 		} else {
 			//random tile
 			var snaketype = Math.floor(Math.random()*8);
@@ -104,21 +139,50 @@ $(document).ready(function(){
 			var w;
 			switch(snaketype) {
 				case 0:
-					thesnake = watersnake;
+					thesnake = snakeanimations.water;
 					h = 41;
 					w = 70;
 					break;
 				case 1:
-					thesnake = firesnake;
+					thesnake = snakeanimations.fire;
 					h = 41;
 					w = 70;
 					break;
 				case 2:
-					thesnake = earthsnake;
+					thesnake = snakeanimations.earth;
 					h = 41;
 					w = 70;
 					break;
-				
+				case 3:
+					thesnake = snakeanimations.waterwater;
+					h = 56;
+					w = 100;
+					break;
+				case 4:
+					thesnake = snakeanimations.waterfire;
+					h = 56;
+					w = 100;
+					break;
+				case 5:
+					thesnake = snakeanimations.waterearth;
+					h = 56;
+					w = 100;
+					break;
+				case 6:
+					thesnake = snakeanimations.firefire;
+					h = 56;
+					w = 100;
+					break;
+				case 7:
+					thesnake = snakeanimations.fireearth;
+					h = 56;
+					w = 100;
+					break;
+				case 8:
+					thesnake = snakeanimations.earthearth;
+					h = 56;
+					w = 100;
+					break;
 			}
 			$("#tile"+i).addSprite("snake"+i, {animation: thesnake, width: w, height: h});
 			$("#tile"+i).attr("rel", i).addClass("tile");
