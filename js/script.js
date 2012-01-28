@@ -56,49 +56,49 @@ $(document).ready(function(){
 		}),
 		'waterwater' : new $.gameQuery.Animation({ 
 			imageURL: "img/doubles.png",
-			numberOfFrame: 1,
+			numberOfFrame: 4,
 			delta: 100,
-			rate: 1,
+			rate: 150,
 			offsety: 0*56,
 			type: $.gameQuery.ANIMATION_HORIZONTAL
 		}),
 		'waterfire' : new $.gameQuery.Animation({ 
 			imageURL: "img/doubles.png",
-			numberOfFrame: 1,
+			numberOfFrame: 4,
 			delta: 100,
-			rate: 1,
+			rate: 150,
 			offsety: 1*56,
 			type: $.gameQuery.ANIMATION_HORIZONTAL
 		}),
 		'waterearth' : new $.gameQuery.Animation({ 
 			imageURL: "img/doubles.png",
-			numberOfFrame: 1,
+			numberOfFrame: 4,
 			delta: 100,
-			rate: 1,
+			rate: 150,
 			offsety: 2*56,
 			type: $.gameQuery.ANIMATION_HORIZONTAL
 		}),
 		'firefire' : new $.gameQuery.Animation({ 
 			imageURL: "img/doubles.png",
-			numberOfFrame: 1,
+			numberOfFrame: 4,
 			delta: 100,
-			rate: 1,
+			rate: 150,
 			offsety: 3*56,
 			type: $.gameQuery.ANIMATION_HORIZONTAL
 		}),
 		'waterearth' : new $.gameQuery.Animation({ 
 			imageURL: "img/doubles.png",
-			numberOfFrame: 1,
+			numberOfFrame: 4,
 			delta: 100,
-			rate: 1,
+			rate: 150,
 			offsety: 4*56,
 			type: $.gameQuery.ANIMATION_HORIZONTAL
 		}),
 		'earthearth' : new $.gameQuery.Animation({ 
 			imageURL: "img/doubles.png",
-			numberOfFrame: 1,
+			numberOfFrame: 4,
 			delta: 100,
-			rate: 1,
+			rate: 150,
 			offsety: 5*56,
 			type: $.gameQuery.ANIMATION_HORIZONTAL
 		}),
