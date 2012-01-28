@@ -2,6 +2,8 @@
 
 */
 
+var snakeToSwap = -1;
+
 $(document).ready(function(){
 
 	$("#playground").playground({height: PLAYGROUND_HEIGHT, width: PLAYGROUND_WIDTH});
@@ -198,10 +200,22 @@ $(document).ready(function(){
 			
 			//rotate(rotationAngle * i * -1);
 		}
-		
-		
-		
 	}
+	
+	$(".tile").click(function(){
+		if (snakeToSwap == -1)
+		{
+			// save it for next click swap
+			snakeToSwap = $(this).attr("rel");
+		}
+		else
+		{
+			var thisIdx = $(this).attr("rel");
+			alert("Swap " + snakeToSwap + " and " + thisIdx);
+			
+			snakeToSwap = -1;
+		}
+	});
 	/*
 	// this sets the id of the loading bar:
 	$().setLoadBar("loadingBar", 400);
