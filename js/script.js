@@ -67,7 +67,7 @@ var snakeanimations = {
 		offsety: 1*56,
 		type: $.gameQuery.ANIMATION_HORIZONTAL
 	}),
-	'waterearth' : new $.gameQuery.Animation({ 
+	'earthwater' : new $.gameQuery.Animation({ 
 		imageURL: "img/doubles.png",
 		numberOfFrame: 4,
 		delta: 100,
@@ -83,7 +83,7 @@ var snakeanimations = {
 		offsety: 3*56,
 		type: $.gameQuery.ANIMATION_HORIZONTAL
 	}),
-	'fireearth' : new $.gameQuery.Animation({ 
+	'earthfire' : new $.gameQuery.Animation({ 
 		imageURL: "img/doubles.png",
 		numberOfFrame: 4,
 		delta: 100,
@@ -133,10 +133,10 @@ function setSnakeDoubleSizeRotation(idx)
 function BuildRing()
 {
 	for(var i  = 0; i < SNAKES_IN_RING; i++) {
-		var leftType = 0;
-		var rightType = 0;
+		var leftType = EMPTY;
+		var rightType = EMPTY;
 
-		while (left == 0 && right == 0)
+		while (leftType == EMPTY && rightType == EMPTY)
 		{
 			leftType = Math.floor(Math.random()*4);
 			rightType = Math.floor(Math.random()*4);
@@ -144,6 +144,11 @@ function BuildRing()
 
 		ringTiles.push({left:leftType, right:rightType});
 	}
+}
+
+function Snake(left, right)
+{
+	return left + 10*right;
 }
 
 function RebuildRing()
@@ -161,79 +166,70 @@ function RebuildRing()
 			//big head
 			$("#tile"+i).addSprite("snake"+i, {animation: snakeanimations.bighead, width: 100, height: 100});
 		} else {
-			//random tile
-			var snaketype = Math.floor(Math.random()*100 + 4);
-			//we'll probably want to be able to weight it - single snakes should be more probably than double snakes
+			var leftSnake = ringTiles[i].left;
+			var rightSnake = ringTiles[i].right;
 			
 			var thesnake = null;
 			var h;
 			var w;
-			var left = '';
-			var right = '';
-			if(snaketype > 4 && snaketype <= 24) {
+			var left = leftSnake;
+			var right = rightSnake;
+
+			switch (Snake(left, right))
+			{
+				case Snake(EMPTY, WATER):
+				case Snake(WATER, EMPTY):
 					thesnake = snakeanimations.water;
 					h = 41;
 					w = 70;
-					left = WATER;
-					right = EMPTY;
 					break;
-			} else if(snaketype > 24 && snaketype <= 44) {
+				case Snake(EMPTY, FIRE):
+				case Snake(FIRE, EMPTY):
 					thesnake = snakeanimations.fire;
 					h = 41;
 					w = 70;
-					left = FIRE;
-					right = EMPTY;
 					break;
-			} else if(snaketype > 44 && snaketype <= 64) {
+				case Snake(EMPTY, EARTH):
+				case Snake(EARTH, EMPTY):
 					thesnake = snakeanimations.earth;
 					h = 41;
 					w = 70;
-					left = EARTH;
-					right = EMPTY;
 					break;
-			} else if(snaketype > 64 && snaketype <= 70) {
+				case Snake(WATER, WATER):
 					thesnake = snakeanimations.waterwater;
 					h = 56;
 					w = 100;
-					left = WATER;
-					right = WATER;
 					break;
-			} else if(snaketype > 70 && snaketype <= 76) {
-					thesnake = snakeanimations.waterfire;
-					h = 56;
-					w = 100;
-					left = WATER;
-					right = FIRE;
-					break;
-			} else if(snaketype > 76 && snaketype <= 82) {
-					thesnake = snakeanimations.waterearth;
-					h = 56;
-					w = 100;
-					left = WATER;
-					right = EARTH;
-					break;
-			} else if(snaketype > 82 && snaketype <= 88) {
+				case Snake(FIRE, FIRE):
 					thesnake = snakeanimations.firefire;
 					h = 56;
 					w = 100;
-					left = FIRE;
-					right = FIRE;
 					break;
-			} else if(snaketype > 88 && snaketype <= 94) {
-					thesnake = snakeanimations.fireearth;
-					h = 56;
-					w = 100;
-					left = FIRE;
-					right = EARTH;
-					break;
-			} else if(snaketype > 94 && snaketype <= 100) {
+				case Snake(EARTH, EARTH):
 					thesnake = snakeanimations.earthearth;
 					h = 56;
 					w = 100;
-					left = EARTH;
-					right = EARTH;
 					break;
-			}
+				case Snake(EARTH, FIRE):
+				case Snake(FIRE, EARTH):
+					thesnake = snakeanimations.earthfire;
+					h = 56;
+					w = 100;
+					break;
+				case Snake(EARTH, WATER):
+				case Snake(WATER, EARTH):
+					thesnake = snakeanimations.earthwater;
+					h = 56;
+					w = 100;
+					break;
+				case Snake(WATER, FIRE):
+				case Snake(FIRE, WATER):
+					thesnake = snakeanimations.waterfire;
+					h = 56;
+					w = 100;
+					break;
+			};
+
 			$("#tile"+i).addSprite("snake"+i, {animation: thesnake, width: w, height: h});
 			$("#tile"+i).attr("rel", i).addClass("tile");
 
@@ -255,6 +251,7 @@ $(document).ready(function(){
 	$.playground().startGame(function() { });
 
 	BuildRing();
+	RebuildRing();
 	
 	$(".tile").click(function(){
 		if (snakeToSwap == -1)
