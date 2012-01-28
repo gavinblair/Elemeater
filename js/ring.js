@@ -1,4 +1,4 @@
-class Ring
+public class Ring
 {
 	static public function getPosOfSnake(var index:int):Object
 	{

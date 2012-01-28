@@ -1,6 +1,6 @@
 /* No magic! */
 
-const var SNAKES_IN_RING = 24;
-const var RING_RADIUS = 100;
-const var SNAKE_W = 50;
-const var SNAKE_H = 50;
+var SNAKES_IN_RING = 24;
+var RING_RADIUS = 100;
+var SNAKE_W = 50;
+var SNAKE_H = 50;
