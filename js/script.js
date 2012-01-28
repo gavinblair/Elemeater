@@ -85,10 +85,12 @@ $(document).ready(function(){
 	for(var i  = 0; i <= SNAKES_IN_RING; i++) {
 		var pos = getPosOfSnake(i);
 		$("#ring").addGroup("tile"+i, { height: 100, width: 100});	
+		//center the tile
+		$("#tile"+i).css("top", (250+pos.x)+"px").css("left", (250+pos.y)+"px");
+		//now move it based on pos.y and pos.x
 		if(i == 0) {
 			//big tail
 			$("#tile"+i).addSprite("snake"+i, {animation: bigtail, width: 100, height: 100});
-			//$("#tile"+i).css("top", pos.y).css("left", pos.x);
 		} else if (i == 1) {
 			//big head
 			$("#tile"+i).addSprite("snake"+i, {animation: bighead, width: 100, height: 100});
