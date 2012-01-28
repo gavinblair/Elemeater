@@ -255,7 +255,7 @@ $(document).ready(function(){
 	
 	$.playground().startGame(function() { });
 
-	RebuildRing();
+	BuildRing();
 	
 	$(".tile").click(function(){
 		if (snakeToSwap == -1)
@@ -270,16 +270,14 @@ $(document).ready(function(){
 			var thisIdx = $(this).attr("rel");
 			//alert("Swap " + snakeToSwap + " and " + thisIdx);
 			
-			/*$("#tile"+snakeToSwap+" .sprite").setAnimation(tiles[Number(thisIdx)].animation);
-			$("#tile"+thisIdx+" .sprite").setAnimation(tiles[Number(snakeToSwap)].animation);*/
-			
-			var tmpTile = tiles[Number(thisIdx)];
-			tiles[Number(thisIdx)] = tiles[Number(snakeToSwap)];
-			tiles[Number(snakeToSwap)] = tmpTile;
+			var tmpTile = ringTiles[Number(thisIdx)];
+			ringTiles[Number(thisIdx)] = ringTiles[Number(snakeToSwap)];
+			ringTiles[Number(snakeToSwap)] = tmpTile;
 			
 			setSnakeRotation(thisIdx);
 			setSnakeRotation(snakeToSwap);
 
+			RebuildRing();
 			snakeToSwap = -1;
 		}
 	});
