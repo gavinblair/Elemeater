@@ -14,7 +14,7 @@ function getPosOfSnake(index) {
 	var centerY = radius * Math.sin(angle * index);
 
 	return {
-		x:(centerX - RING_RADIUS - SNAKE_RADIUS),
-		y:(centerY - RING_RADIUS - SNAKE_RADIUS)
+		x:(centerX - SNAKE_RADIUS),
+		y:(centerY - SNAKE_RADIUS)
 	};
 }
