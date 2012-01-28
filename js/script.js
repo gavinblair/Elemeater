@@ -189,7 +189,14 @@ $(document).ready(function(){
 			$("#tile"+i).addSprite("snake"+i, {animation: thesnake, width: w, height: h});
 			$("#tile"+i).attr("rel", i).addClass("tile");
 			
-			$("#tile"+i+" .sprite").rotate(rotationAngle * i * -1);
+			var rot = rotationAngle * i * -1;
+			$("#tile"+i+" .sprite").css("transform", "rotate("+rot+"deg)");
+			$("#tile"+i+" .sprite").css("-ms-transform", "rotate("+rot+"deg)"); /* IE 9 */
+			$("#tile"+i+" .sprite").css("-moz-transform", "rotate("+rot+"deg)"); /* Firefox */
+			$("#tile"+i+" .sprite").css("-webkit-transform", "rotate("+rot+"deg)"); /* Safari and Chrome */
+			$("#tile"+i+" .sprite").css("-o-transform", "rotate("+rot+"deg)"); /* Opera */
+			
+			//rotate(rotationAngle * i * -1);
 		}
 		
 		
