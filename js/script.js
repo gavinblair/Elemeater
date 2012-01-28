@@ -119,9 +119,7 @@ $(document).ready(function(){
 	
 	var tiles = new Array();
 	
-	var rotationAngle = 360 / SNAKES_IN_RING;
-	
-	for(var i  = 0; i <= SNAKES_IN_RING; i++) {
+	for(var i  = 0; i < SNAKES_IN_RING; i++) {
 		var pos = getPosOfSnake(i);
 		$("#ring").addGroup("tile"+i, { height: 100, width: 100});	
 		//center the tile
@@ -190,13 +188,8 @@ $(document).ready(function(){
 			}
 			$("#tile"+i).addSprite("snake"+i, {animation: thesnake, width: w, height: h});
 			$("#tile"+i).attr("rel", i).addClass("tile");
-			
-			var rot = rotationAngle * i * -1;
-			$("#tile"+i+" .sprite").css("transform", "rotate("+rot+"deg)");
-			$("#tile"+i+" .sprite").css("-ms-transform", "rotate("+rot+"deg)"); /* IE 9 */
-			$("#tile"+i+" .sprite").css("-moz-transform", "rotate("+rot+"deg)"); /* Firefox */
-			$("#tile"+i+" .sprite").css("-webkit-transform", "rotate("+rot+"deg)"); /* Safari and Chrome */
-			$("#tile"+i+" .sprite").css("-o-transform", "rotate("+rot+"deg)"); /* Opera */
+
+			setSnakeRotation(i)
 			
 			//rotate(rotationAngle * i * -1);
 		}
@@ -207,12 +200,17 @@ $(document).ready(function(){
 		{
 			// save it for next click swap
 			snakeToSwap = $(this).attr("rel");
+
+			setSnakeDoubleSizeRotation(snakeToSwap);
 		}
 		else
 		{
 			var thisIdx = $(this).attr("rel");
 			alert("Swap " + snakeToSwap + " and " + thisIdx);
 			
+			setSnakeRotation(thisIdx);
+			setSnakeRotation(snakeToSwap);
+
 			snakeToSwap = -1;
 		}
 	});
@@ -227,6 +225,33 @@ $(document).ready(function(){
 		});
 	});*/
 });
+
+function setSnakeRotation(idx)
+{
+	var rotationAngle = 360 / SNAKES_IN_RING;
+	var rot = rotationAngle * idx * -1;
+	var snake = $("#tile"+idx+" .sprite");
+
+	snake.css("transform", "rotate("+rot+"deg)");
+	snake.css("-ms-transform", "rotate("+rot+"deg)"); /* IE 9 */
+	snake.css("-moz-transform", "rotate("+rot+"deg)"); /* Firefox */
+	snake.css("-webkit-transform", "rotate("+rot+"deg)"); /* Safari and Chrome */
+	snake.css("-o-transform", "rotate("+rot+"deg)"); /* Opera */
+			
+}
+
+function setSnakeDoubleSizeRotation(idx)
+{
+	var rotationAngle = 360 / SNAKES_IN_RING;
+	var rot = rotationAngle * idx * -1;
+	var snake = $("#tile"+idx+" .sprite");
+
+	snake.css("transform", "rotate("+rot+"deg) scale(2.0, 2.0)");
+	snake.css("-ms-transform", "rotate("+rot+"deg) scale(2.0, 2.0)"); /* IE 9 */
+	snake.css("-moz-transform", "rotate("+rot+"deg) scale(2.0, 2.0)"); /* Firefox */
+	snake.css("-webkit-transform", "rotate("+rot+"deg) scale(2.0, 2.0)"); /* Safari and Chrome */
+	snake.css("-o-transform", "rotate("+rot+"deg) scale(2.0, 2.0)"); /* Opera */
+}
 
 // Function to restart the game:
 function restartgame(){
