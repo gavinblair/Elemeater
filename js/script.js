@@ -86,7 +86,7 @@ $(document).ready(function(){
 		var pos = getPosOfSnake(i);
 		$("#ring").addGroup("tile"+i, { height: 100, width: 100});	
 		//center the tile
-		$("#tile"+i).css("top", (250+pos.x)+"px").css("left", (250+pos.y)+"px");
+		$("#tile"+i).css("top", (300+pos.x)+"px").css("left", (300+pos.y)+"px");
 		//now move it based on pos.y and pos.x
 		if(i == 0) {
 			//big tail
@@ -99,7 +99,7 @@ $(document).ready(function(){
 			var snaketype = Math.floor(Math.random()*8);
 			//we'll probably want to be able to weight it - single snakes should be more probably than double snakes
 			
-			var thesnake;
+			var thesnake = null;
 			var h;
 			var w;
 			switch(snaketype) {
@@ -121,11 +121,20 @@ $(document).ready(function(){
 				
 			}
 			$("#tile"+i).addSprite("snake"+i, {animation: thesnake, width: w, height: h});
+			$("#tile"+i).attr("rel", i).addClass("tile");
+			
+			
 			
 		}
 		
 		
+		
 	}
+	
+	$(".tile").click(function(){
+				alert($(this).attr("rel"));
+				$(this).hide();
+			});
 	/*
 	// this sets the id of the loading bar:
 	$().setLoadBar("loadingBar", 400);
