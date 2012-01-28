@@ -1,4 +1,4 @@
-var movesLeft = STARTING_MOVES_LEFT;
+var movesLeft = STARTING_MOVES;
 var specials = new Array(0,0,0);
 
 var SPECIAL_RECOLOUR = 0;
