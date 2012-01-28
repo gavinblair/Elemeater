@@ -3,6 +3,34 @@
 */
 
 var snakeToSwap = -1;
+var tiles = new Array();
+
+function setSnakeRotation(idx)
+{
+	var rotationAngle = 360 / SNAKES_IN_RING;
+	var rot = rotationAngle * idx * -1;
+	var snake = $("#tile"+idx+" .sprite");
+
+	snake.css("transform", "rotate("+rot+"deg)");
+	snake.css("-ms-transform", "rotate("+rot+"deg)"); /* IE 9 */
+	snake.css("-moz-transform", "rotate("+rot+"deg)"); /* Firefox */
+	snake.css("-webkit-transform", "rotate("+rot+"deg)"); /* Safari and Chrome */
+	snake.css("-o-transform", "rotate("+rot+"deg)"); /* Opera */
+			
+}
+
+function setSnakeDoubleSizeRotation(idx)
+{
+	var rotationAngle = 360 / SNAKES_IN_RING;
+	var rot = rotationAngle * idx * -1;
+	var snake = $("#tile"+idx+" .sprite");
+
+	snake.css("transform", "rotate("+rot+"deg) scale(2.0, 2.0)");
+	snake.css("-ms-transform", "rotate("+rot+"deg) scale(2.0, 2.0)"); /* IE 9 */
+	snake.css("-moz-transform", "rotate("+rot+"deg) scale(2.0, 2.0)"); /* Firefox */
+	snake.css("-webkit-transform", "rotate("+rot+"deg) scale(2.0, 2.0)"); /* Safari and Chrome */
+	snake.css("-o-transform", "rotate("+rot+"deg) scale(2.0, 2.0)"); /* Opera */
+}
 
 $(document).ready(function(){
 
@@ -117,7 +145,6 @@ $(document).ready(function(){
 	
 	$.playground().startGame(function() { });
 	
-	var tiles = new Array();
 	
 	var rotationAngle = 360 / SNAKES_IN_RING;
 	
@@ -141,64 +168,83 @@ $(document).ready(function(){
 			var thesnake = null;
 			var h;
 			var w;
+			var left = '';
+			var right = '';
 			switch(snaketype) {
 				case 0:
 					thesnake = snakeanimations.water;
 					h = 41;
 					w = 70;
+					left = WATER;
+					right = EMPTY;
 					break;
 				case 1:
 					thesnake = snakeanimations.fire;
 					h = 41;
 					w = 70;
+					left = FIRE;
+					right = EMPTY;
 					break;
 				case 2:
 					thesnake = snakeanimations.earth;
 					h = 41;
 					w = 70;
+					left = EARTH;
+					right = EMPTY;
 					break;
 				case 3:
 					thesnake = snakeanimations.waterwater;
 					h = 56;
 					w = 100;
+					left = WATER;
+					right = WATER;
 					break;
 				case 4:
 					thesnake = snakeanimations.waterfire;
 					h = 56;
 					w = 100;
+					left = WATER;
+					right = FIRE;
 					break;
 				case 5:
 					thesnake = snakeanimations.waterearth;
 					h = 56;
 					w = 100;
+					left = WATER;
+					right = EARTH;
 					break;
 				case 6:
 					thesnake = snakeanimations.firefire;
 					h = 56;
 					w = 100;
+					left = FIRE;
+					right = FIRE;
 					break;
 				case 7:
 					thesnake = snakeanimations.fireearth;
 					h = 56;
 					w = 100;
+					left = FIRE;
+					right = EARTH;
 					break;
 				case 8:
 					thesnake = snakeanimations.earthearth;
 					h = 56;
 					w = 100;
+					left = EARTH;
+					right = EARTH;
 					break;
 			}
 			$("#tile"+i).addSprite("snake"+i, {animation: thesnake, width: w, height: h});
 			$("#tile"+i).attr("rel", i).addClass("tile");
+
+			setSnakeRotation(i);
 			
-			var rot = rotationAngle * i * -1;
-			$("#tile"+i+" .sprite").css("transform", "rotate("+rot+"deg)");
-			$("#tile"+i+" .sprite").css("-ms-transform", "rotate("+rot+"deg)"); /* IE 9 */
-			$("#tile"+i+" .sprite").css("-moz-transform", "rotate("+rot+"deg)"); /* Firefox */
-			$("#tile"+i+" .sprite").css("-webkit-transform", "rotate("+rot+"deg)"); /* Safari and Chrome */
-			$("#tile"+i+" .sprite").css("-o-transform", "rotate("+rot+"deg)"); /* Opera */
-			
-			//rotate(rotationAngle * i * -1);
+			tiles.push({
+				animation: thesnake,
+				left: left,
+				right: right
+			});
 		}
 	}
 	
@@ -207,12 +253,24 @@ $(document).ready(function(){
 		{
 			// save it for next click swap
 			snakeToSwap = $(this).attr("rel");
+
+			setSnakeDoubleSizeRotation(snakeToSwap);
 		}
 		else
 		{
 			var thisIdx = $(this).attr("rel");
-			alert("Swap " + snakeToSwap + " and " + thisIdx);
+			//alert("Swap " + snakeToSwap + " and " + thisIdx);
 			
+			/*$("#tile"+snakeToSwap+" .sprite").setAnimation(tiles[Number(thisIdx)].animation);
+			$("#tile"+thisIdx+" .sprite").setAnimation(tiles[Number(snakeToSwap)].animation);*/
+			
+			var tmpTile = tiles[Number(thisIdx)];
+			tiles[Number(thisIdx)] = tiles[Number(snakeToSwap)];
+			tiles[Number(snakeToSwap)] = tmpTile;
+			
+			setSnakeRotation(thisIdx);
+			setSnakeRotation(snakeToSwap);
+
 			snakeToSwap = -1;
 		}
 	});
