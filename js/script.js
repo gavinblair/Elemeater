@@ -162,7 +162,7 @@ function RebuildRing()
 			$("#tile"+i).addSprite("snake"+i, {animation: snakeanimations.bighead, width: 100, height: 100});
 		} else {
 			//random tile
-			var snaketype = Math.floor(Math.random()*8);
+			var snaketype = Math.floor(Math.random()*100 + 4);
 			//we'll probably want to be able to weight it - single snakes should be more probably than double snakes
 			
 			var thesnake = null;
@@ -170,64 +170,63 @@ function RebuildRing()
 			var w;
 			var left = '';
 			var right = '';
-			switch(snaketype) {
-				case 0:
+			if(snaketype > 4 && snaketype <= 24) {
 					thesnake = snakeanimations.water;
 					h = 41;
 					w = 70;
 					left = WATER;
 					right = EMPTY;
 					break;
-				case 1:
+			} else if(snaketype > 24 && snaketype <= 44) {
 					thesnake = snakeanimations.fire;
 					h = 41;
 					w = 70;
 					left = FIRE;
 					right = EMPTY;
 					break;
-				case 2:
+			} else if(snaketype > 44 && snaketype <= 64) {
 					thesnake = snakeanimations.earth;
 					h = 41;
 					w = 70;
 					left = EARTH;
 					right = EMPTY;
 					break;
-				case 3:
+			} else if(snaketype > 64 && snaketype <= 70) {
 					thesnake = snakeanimations.waterwater;
 					h = 56;
 					w = 100;
 					left = WATER;
 					right = WATER;
 					break;
-				case 4:
+			} else if(snaketype > 70 && snaketype <= 76) {
 					thesnake = snakeanimations.waterfire;
 					h = 56;
 					w = 100;
 					left = WATER;
 					right = FIRE;
 					break;
-				case 5:
+			} else if(snaketype > 76 && snaketype <= 82) {
 					thesnake = snakeanimations.waterearth;
 					h = 56;
 					w = 100;
 					left = WATER;
 					right = EARTH;
 					break;
-				case 6:
+			} else if(snaketype > 82 && snaketype <= 88) {
 					thesnake = snakeanimations.firefire;
 					h = 56;
 					w = 100;
 					left = FIRE;
 					right = FIRE;
 					break;
-				case 7:
+			} else if(snaketype > 88 && snaketype <= 94) {
 					thesnake = snakeanimations.fireearth;
 					h = 56;
 					w = 100;
 					left = FIRE;
 					right = EARTH;
 					break;
-				case 8:
+			} else if(snaketype > 94 && snaketype <= 100) {
 					thesnake = snakeanimations.earthearth;
 					h = 56;
 					w = 100;
