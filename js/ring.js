@@ -9,8 +9,12 @@ function getPosOfSnake(index) {
 
 	// Whee! Highschool trig.
 
+	// centers of tiles are relative to center of ring
 	var centerX = radius * Math.cos(angle * index);
 	var centerY = radius * Math.sin(angle * index);
 
-	return { x:centerX, y:centerY };
+	return {
+		x:(centerX - RING_RADIUS - SNAKE_RADIUS),
+		y:(centerY - RING_RADIUS - SNAKE_RADIUS)
+	};
 }
