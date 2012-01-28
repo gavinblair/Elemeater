@@ -121,7 +121,7 @@ $(document).ready(function(){
 	
 	var rotationAngle = 360 / SNAKES_IN_RING;
 	
-	for(var i  = 0; i <= SNAKES_IN_RING; i++) {
+	for(var i  = 0; i < SNAKES_IN_RING; i++) {
 		var pos = getPosOfSnake(i);
 		$("#ring").addGroup("tile"+i, { height: 100, width: 100});	
 		//center the tile
