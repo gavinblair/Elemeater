@@ -1,6 +1,4 @@
-public class Ring
-{
-	static public function getPosOfSnake(var index:int):Object
+function getPosOfSnake(index)
 	{
 		/*
 			Snakes positioned on a circle. 0-index at 12 o'clock
@@ -17,4 +15,3 @@ public class Ring
 
 		return { x:0, y:0 };
 	}
-};
