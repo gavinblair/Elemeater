@@ -34,7 +34,7 @@ $(document).ready(function(){
 			imageURL: "img/singles.png",
 			numberOfFrame: 4,
 			delta: 70,
-			rate: 150,
+			rate: 150+Math.floor(Math.random()*10),
 			offsety: 0*41,
 			type: $.gameQuery.ANIMATION_HORIZONTAL
 		}),
@@ -42,7 +42,7 @@ $(document).ready(function(){
 			imageURL: "img/singles.png",
 			numberOfFrame: 4,
 			delta: 70,
-			rate: 150,
+			rate: 150+Math.floor(Math.random()*10),
 			offsety: 1*41,
 			type: $.gameQuery.ANIMATION_HORIZONTAL
 		}),
@@ -50,7 +50,7 @@ $(document).ready(function(){
 			imageURL: "img/singles.png",
 			numberOfFrame: 4,
 			delta: 70,
-			rate: 150,
+			rate: 150+Math.floor(Math.random()*10),
 			offsety: 2*41,
 			type: $.gameQuery.ANIMATION_HORIZONTAL
 		}),
@@ -58,7 +58,7 @@ $(document).ready(function(){
 			imageURL: "img/doubles.png",
 			numberOfFrame: 4,
 			delta: 100,
-			rate: 150,
+			rate: 150+Math.floor(Math.random()*10),
 			offsety: 0*56,
 			type: $.gameQuery.ANIMATION_HORIZONTAL
 		}),
@@ -66,7 +66,7 @@ $(document).ready(function(){
 			imageURL: "img/doubles.png",
 			numberOfFrame: 4,
 			delta: 100,
-			rate: 150,
+			rate: 150+Math.floor(Math.random()*10),
 			offsety: 1*56,
 			type: $.gameQuery.ANIMATION_HORIZONTAL
 		}),
@@ -74,7 +74,7 @@ $(document).ready(function(){
 			imageURL: "img/doubles.png",
 			numberOfFrame: 4,
 			delta: 100,
-			rate: 150,
+			rate: 150+Math.floor(Math.random()*10),
 			offsety: 2*56,
 			type: $.gameQuery.ANIMATION_HORIZONTAL
 		}),
@@ -82,15 +82,15 @@ $(document).ready(function(){
 			imageURL: "img/doubles.png",
 			numberOfFrame: 4,
 			delta: 100,
-			rate: 150,
+			rate: 150+Math.floor(Math.random()*10),
 			offsety: 3*56,
 			type: $.gameQuery.ANIMATION_HORIZONTAL
 		}),
-		'waterearth' : new $.gameQuery.Animation({ 
+		'fireearth' : new $.gameQuery.Animation({ 
 			imageURL: "img/doubles.png",
 			numberOfFrame: 4,
 			delta: 100,
-			rate: 150,
+			rate: 150+Math.floor(Math.random()*10),
 			offsety: 4*56,
 			type: $.gameQuery.ANIMATION_HORIZONTAL
 		}),
@@ -98,7 +98,7 @@ $(document).ready(function(){
 			imageURL: "img/doubles.png",
 			numberOfFrame: 4,
 			delta: 100,
-			rate: 150,
+			rate: 150+Math.floor(Math.random()*10),
 			offsety: 5*56,
 			type: $.gameQuery.ANIMATION_HORIZONTAL
 		}),
@@ -195,11 +195,6 @@ $(document).ready(function(){
 		
 		
 	}
-	
-	$(".tile").click(function(){
-				alert($(this).attr("rel"));
-				$(this).hide();
-			});
 	/*
 	// this sets the id of the loading bar:
 	$().setLoadBar("loadingBar", 400);
