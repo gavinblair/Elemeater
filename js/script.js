@@ -117,6 +117,8 @@ $(document).ready(function(){
 	
 	var tiles = new Array();
 	
+	var rotationAngle = 360 / SNAKES_IN_RING;
+	
 	for(var i  = 0; i <= SNAKES_IN_RING; i++) {
 		var pos = getPosOfSnake(i);
 		$("#ring").addGroup("tile"+i, { height: 100, width: 100});	
@@ -187,8 +189,7 @@ $(document).ready(function(){
 			$("#tile"+i).addSprite("snake"+i, {animation: thesnake, width: w, height: h});
 			$("#tile"+i).attr("rel", i).addClass("tile");
 			
-			
-			
+			$("#tile"+i+" .sprite").rotate(rotationAngle * i * -1);
 		}
 		
 		
