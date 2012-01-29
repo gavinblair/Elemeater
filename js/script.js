@@ -29,7 +29,7 @@ var snakeanimations = {
 	}),
 	'water' : new $.gameQuery.Animation({ 
 		imageURL: "img/singles.png",
-		numberOfFrame: 4,
+		numberOfFrame: 1,
 		delta: 100,
 		rate: 150+Math.floor(Math.random()*10),
 		offsety: 0*100,
@@ -37,7 +37,7 @@ var snakeanimations = {
 	}),
 	'fire' : new $.gameQuery.Animation({ 
 		imageURL: "img/singles.png",
-		numberOfFrame: 4,
+		numberOfFrame: 1,
 		delta: 100,
 		rate: 150+Math.floor(Math.random()*10),
 		offsety: 1*100,
@@ -45,7 +45,7 @@ var snakeanimations = {
 	}),
 	'earth' : new $.gameQuery.Animation({ 
 		imageURL: "img/singles.png",
-		numberOfFrame: 4,
+		numberOfFrame: 1,
 		delta: 100,
 		rate: 150+Math.floor(Math.random()*10),
 		offsety: 2*100,
@@ -53,7 +53,7 @@ var snakeanimations = {
 	}),
 	'waterwater' : new $.gameQuery.Animation({ 
 		imageURL: "img/doubles.png",
-		numberOfFrame: 4,
+		numberOfFrame: 1,
 		delta: 100,
 		rate: 150+Math.floor(Math.random()*10),
 		offsety: 0*100,
@@ -61,7 +61,7 @@ var snakeanimations = {
 	}),
 	'waterfire' : new $.gameQuery.Animation({ 
 		imageURL: "img/doubles.png",
-		numberOfFrame: 4,
+		numberOfFrame: 1,
 		delta: 100,
 		rate: 150+Math.floor(Math.random()*10),
 		offsety: 1*100,
@@ -69,7 +69,7 @@ var snakeanimations = {
 	}),
 	'earthwater' : new $.gameQuery.Animation({ 
 		imageURL: "img/doubles.png",
-		numberOfFrame: 4,
+		numberOfFrame: 1,
 		delta: 100,
 		rate: 150+Math.floor(Math.random()*10),
 		offsety: 2*100,
@@ -77,7 +77,7 @@ var snakeanimations = {
 	}),
 	'firefire' : new $.gameQuery.Animation({ 
 		imageURL: "img/doubles.png",
-		numberOfFrame: 4,
+		numberOfFrame: 1,
 		delta: 100,
 		rate: 150+Math.floor(Math.random()*10),
 		offsety: 3*100,
@@ -85,7 +85,7 @@ var snakeanimations = {
 	}),
 	'earthfire' : new $.gameQuery.Animation({ 
 		imageURL: "img/doubles.png",
-		numberOfFrame: 4,
+		numberOfFrame: 1,
 		delta: 100,
 		rate: 150+Math.floor(Math.random()*10),
 		offsety: 4*100,
@@ -93,7 +93,7 @@ var snakeanimations = {
 	}),
 	'earthearth' : new $.gameQuery.Animation({ 
 		imageURL: "img/doubles.png",
-		numberOfFrame: 4,
+		numberOfFrame: 1,
 		delta: 100,
 		rate: 150+Math.floor(Math.random()*10),
 		offsety: 5*100,
