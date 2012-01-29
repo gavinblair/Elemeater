@@ -494,7 +494,7 @@ $(document).ready(function(){
 				
 				transpose.play();
 			} else {
-				ringTiles[Number(thisIdx)].flipped = !ringTiles[Number(thisIdx)].flipped;
+				ringTiles[Number(snakeToSwap)].flipped = !ringTiles[Number(snakeToSwap)].flipped;
 
 				colourchange.play();
 				setSnakeRotation(thisIdx);
