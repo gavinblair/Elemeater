@@ -351,7 +351,6 @@ $(document).ready(function(){
 		width: PLAYGROUND_WIDTH, height: PLAYGROUND_HEIGHT
 	});
 	
-	
 	$.playground().startGame(function() { });
 
 	BuildRing();
