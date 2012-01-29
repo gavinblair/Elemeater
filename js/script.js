@@ -144,6 +144,12 @@ function BuildRing()
 		var leftType = EMPTY;
 		var rightType = EMPTY;
 
+		if(i == 0) {
+			leftType = rightType = TAIL;
+		} else if (i == 1) {
+			leftType = rightType = HEAD;
+		}
+		
 		while (leftType == EMPTY && rightType == EMPTY)
 		{
 			if(Math.random() <= 0.40) {
@@ -177,13 +183,13 @@ function RebuildRing()
 		$("#tile"+i).css("top", (300+pos.x)+"px").css("left", (300+pos.y)+"px");
 		
 		
-		if(i == 0) {
+		/*if(i == 0) {
 			//big tail
 			$("#tile"+i).addSprite("snake"+i, {animation: snakeanimations.bigtail, width: 100, height: 100});
 		} else if (i == 1) {
 			//big head
 			$("#tile"+i).addSprite("snake"+i, {animation: snakeanimations.bighead, width: 100, height: 100});
-		} else {
+		} else*/ {
 			var leftSnake = ringTiles[i].left;
 			var rightSnake = ringTiles[i].right;
 			
@@ -196,9 +202,17 @@ function RebuildRing()
 
 			switch (Snake(left, right))
 			{
+				case Snake(HEAD, HEAD):
+					thesnake = snakeanimations.bighead;
+					thetype = "ouroborous";
+					break;
+				case Snake(TAIL, TAIL):
+					thesnake = snakeanimations.bigtail;
+					thetype = "ouroborous";
+					break;
 				case Snake(EMPTY, EMPTY):
 					thesnake = snakeanimations.bigbody;
-					thetype = "body";
+					thetype = "ouroborous";
 					break;
 				case Snake(EMPTY, WATER):
 				case Snake(WATER, EMPTY):
@@ -248,7 +262,7 @@ function RebuildRing()
 			$("#tile"+i).addSprite("snake"+i, {animation: thesnake, width: w, height: h});
 			$("#tile"+i).attr("rel", i).addClass("tile").addClass(thetype);
 			
-			if(thetype == "body") {
+			if(thetype == "ouroborous") {
 				$("#snake"+i).unbind('hover').unbind('click');
 			}
 
@@ -272,7 +286,7 @@ $(document).ready(function(){
 	BuildRing();
 	RebuildRing();
 	
-	$(".tile").click(function(){
+	$(".tile:not(.ouroborous)").click(function(){
 		if (snakeToSwap == -1)
 		{
 			// save it for next click swap
@@ -312,7 +326,7 @@ $(document).ready(function(){
 		RebuildRing();*/
 	});
 
-	$(".tile").hover(
+	$(".tile:not(.ouroborous)").hover(
 		// in
 		function(){
 			setSnakeScaledRotation($(this).attr("rel"), 1.1);
