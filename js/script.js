@@ -150,7 +150,7 @@ function setSnakeRotation(idx)
 	var rot = rotationAngle * idx * -1;
 	var snake = $("#tile"+idx+" .sprite");
 	
-	if($("#tile"+idx).hasClass("flipped")) {
+	if (ringTiles[idx].flipped) {
 		rot+=180;
 	}
 
@@ -168,7 +168,7 @@ function setSnakeScaledRotation(idx, scalar)
 	var rot = rotationAngle * idx * -1;
 	var snake = $("#tile"+idx+" .sprite");
 
-	if($("#tile"+idx).hasClass("flipped")) {
+	if (ringTiles[idx].flipped) {
 		rot+=180;
 	}
 	
@@ -186,10 +186,10 @@ function BuildRing()
 		var leftType = EMPTY;
 		var rightType = EMPTY;
 
-		/* the TAIL always starts at position 0 and the HEAD always starts at position 1 */
-		if(i == 0) {
+		/* the TAIL always starts at position N and the HEAD always starts at position 0 */
+		if(i == SNAKES_IN_RING-1) {
 			leftType = rightType = TAIL;
-		} else if (i == 1) {
+		} else if (i == 0) {
 			leftType = rightType = HEAD;
 		}
 		
@@ -204,13 +204,55 @@ function BuildRing()
 			}
 		}
 
-		ringTiles.push({left:leftType, right:rightType});
+		var isFlipped = (Math.random() > 0.5);
+			isFlipped = isFlipped && (leftType != HEAD) && (rightType != TAIL);
+		ringTiles.push({left:leftType, right:rightType, flipped:isFlipped});
 	}
 }
 
 function Snake(left, right)
 {
 	return left + 10*right;
+}
+
+function IsOroPiece(idx)
+{
+	return ((ringTiles[idx].left == EMPTY && ringTiles[idx].right == EMPTY) ||
+			(ringTiles[idx].left == HEAD && ringTiles[idx].right == HEAD) ||
+			(ringTiles[idx].left == TAIL && ringTiles[idx].right == TAIL));
+}
+
+// clean up EMPTIES
+function BalanceRing()
+{
+	var newRingTiles = new Array;
+	for (var i = 0; i < ringTiles.length; ++i) {
+		if (!IsOroPiece(i)) {
+			newRingTiles.push(ringTiles[i]);
+		}
+	}
+
+	var missingTiles = SNAKES_IN_RING - newRingTiles.length;
+	var tailTiles = Math.floor(missingTiles / 2);
+	var headTiles = missingTiles - tailTiles;
+
+	newRingTiles.push({left:TAIL, right:TAIL});
+	for (var i = 0; i < tailTiles - 1; ++i) {
+		newRingTiles.push({left:EMPTY, right:EMPTY});
+	}
+
+	newRingTiles.splice(0,0,{left:HEAD, right:HEAD});
+	for (var i = 0; i < headTiles - 1; ++i) {
+		newRingTiles.splice(0,0,{left:EMPTY, right:EMPTY});
+	}
+
+	ringTiles = newRingTiles;
+}
+
+function tilename(idx)
+{
+	var tilenames = ["tail", "head", "empty/body", "water", "earth", "fire"];
+	return tilenames[idx+2];
 }
 
 function ConsumeMatches()
@@ -225,27 +267,26 @@ function ConsumeMatches()
 			var tile = ringTiles[i];
 			var nextTile = ringTiles[i+1];
 
-			if (tile.left == EMPTY && tile.right == EMPTY) continue;
+			var visualLeft = tile.flipped ? tile.right : tile.left;
+			var visualRight = nextTile.flipped ? nextTile.left : nextTile.right;
 
-			if (tile.left == WATER && nextTile.right == EARTH)
+			if ((visualLeft == WATER && visualRight == EARTH) ||	// WATER erodes EARTH
+				(visualLeft == EARTH && visualRight == FIRE) ||  	// EARTH buries FIRE
+				(visualLeft == FIRE && visualRight == WATER)		// FIRE boils WATER
+			)
 			{
-				// WATER erodes EARTH
 				nextTile.left = EMPTY;
 				nextTile.right = EMPTY;
 				matchMade = true;
 			}
-			else if (tile.left == EARTH && nextTile.right == FIRE)
+
+			if ((visualLeft == EARTH && visualRight == WATER) ||	// WATER erodes EARTH
+				(visualLeft == FIRE && visualRight == EARTH) ||  	// EARTH buries FIRE
+				(visualLeft == WATER && visualRight == FIRE)		// FIRE boils WATER
+			)
 			{
-				// EARTH buries FIRE
-				nextTile.left = EMPTY;
-				nextTile.right = EMPTY;
-				matchMade = true;
-			}
-			else if (tile.left == FIRE && nextTile.right == WATER)
-			{
-				// FIRE boils WATER
-				nextTile.left = EMPTY;
-				nextTile.right = EMPTY;
+				tile.left = EMPTY;
+				tile.right = EMPTY;
 				matchMade = true;
 			}
 		}
@@ -427,6 +468,8 @@ $(document).ready(function(){
 	});
 
 	BuildRing();
+	ConsumeMatches();
+	BalanceRing();
 	RebuildRing();
 	
 	$(".tile:not(.ouroborous)").click(function(){
@@ -451,19 +494,18 @@ $(document).ready(function(){
 				
 				transpose.play();
 			} else {
-				if($("#tile"+snakeToSwap).hasClass("flipped")) {
-					$("#tile"+snakeToSwap).removeClass("flipped");
-				} else {
-					$("#tile"+snakeToSwap).addClass("flipped");
-				}
+				ringTiles[Number(thisIdx)].flipped = !ringTiles[Number(thisIdx)].flipped;
+
 				colourchange.play();
 				setSnakeRotation(thisIdx);
 				setSnakeRotation(snakeToSwap);
 			}
 
 			$(".tile.selected").removeClass('.selected');
-			RebuildRing();
+
 			ConsumeMatches();
+			BalanceRing();
+			RebuildRing();
 			snakeToSwap = -1;
 		}
 		
