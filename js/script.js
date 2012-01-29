@@ -302,16 +302,18 @@ $(document).ready(function(){
 		else
 		{
 			var thisIdx = $(this).attr("rel");
-			//alert("Swap " + snakeToSwap + " and " + thisIdx);
-			
-			var tmpTile = ringTiles[Number(thisIdx)];
-			ringTiles[Number(thisIdx)] = ringTiles[Number(snakeToSwap)];
-			ringTiles[Number(snakeToSwap)] = tmpTile;
-			
-			setSnakeRotation(thisIdx);
-			setSnakeRotation(snakeToSwap);
-			$(".tile.selected").removeClass();
+			if(thisIdx != snakeToSwap) {
+				var tmpTile = ringTiles[Number(thisIdx)];
+				ringTiles[Number(thisIdx)] = ringTiles[Number(snakeToSwap)];
+				ringTiles[Number(snakeToSwap)] = tmpTile;
+				
+				setSnakeRotation(thisIdx);
+				setSnakeRotation(snakeToSwap);
+			} else {
+				$("#snake"+snakeToSwap).css("border", "1px solid red");
+			}
 
+			$(".tile.selected").removeClass();
 			RebuildRing();
 			ConsumeMatches();
 			snakeToSwap = -1;
