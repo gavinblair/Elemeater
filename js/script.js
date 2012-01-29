@@ -107,6 +107,10 @@ function setSnakeRotation(idx)
 	var rotationAngle = 360 / SNAKES_IN_RING;
 	var rot = rotationAngle * idx * -1;
 	var snake = $("#tile"+idx+" .sprite");
+	
+	if($("#tile"+idx).hasClass("flipped")) {
+		rot+=180;
+	}
 
 	snake.css("transform", "rotate("+rot+"deg)");
 	snake.css("-ms-transform", "rotate("+rot+"deg)"); /* IE 9 */
@@ -122,6 +126,10 @@ function setSnakeScaledRotation(idx, scalar)
 	var rot = rotationAngle * idx * -1;
 	var snake = $("#tile"+idx+" .sprite");
 
+	if($("#tile"+idx).hasClass("flipped")) {
+		rot+=180;
+	}
+	
 	snake.css("transform", "rotate("+rot+"deg) scale("+scalar+", "+scalar+")");
 	snake.css("-ms-transform", "rotate("+rot+"deg) scale("+scalar+", "+scalar+")"); /* IE 9 */
 	snake.css("-moz-transform", "rotate("+rot+"deg) scale("+scalar+", "+scalar+")"); /* Firefox */
@@ -136,6 +144,13 @@ function BuildRing()
 		var leftType = EMPTY;
 		var rightType = EMPTY;
 
+		/* the TAIL always starts at position 0 and the HEAD always starts at position 1 */
+		if(i == 0) {
+			leftType = rightType = TAIL;
+		} else if (i == 1) {
+			leftType = rightType = HEAD;
+		}
+		
 		while (leftType == EMPTY && rightType == EMPTY)
 		{
 			if(Math.random() <= 0.40) {
@@ -199,79 +214,91 @@ function RebuildRing()
 {
 	for(var i  = 0; i < SNAKES_IN_RING; i++) {
 		var pos = getPosOfSnake(i+(SNAKES_IN_RING/2));
-		$("#ring").addGroup("tile"+i, { height: 100, width: 100});	
-		//center the tile
-		$("#tile"+i).css("top", (300+pos.x)+"px").css("left", (300+pos.y)+"px");
-		//now move it based on pos.y and pos.x
-		if(i == 0) {
-			//big tail
-			$("#tile"+i).addSprite("snake"+i, {animation: snakeanimations.bigtail, width: 100, height: 100});
-		} else if (i == 1) {
-			//big head
-			$("#tile"+i).addSprite("snake"+i, {animation: snakeanimations.bighead, width: 100, height: 100});
-		} else {
-			var leftSnake = ringTiles[i].left;
-			var rightSnake = ringTiles[i].right;
-			
-			var thesnake = null;
-			var thetype = null;
-			var h = 100;
-			var w = 100;
-			var left = leftSnake;
-			var right = rightSnake;
-
-			switch (Snake(left, right))
-			{
-				case Snake(EMPTY, WATER):
-				case Snake(WATER, EMPTY):
-					thesnake = snakeanimations.water;
-					thetype ="water";
-					break;
-				case Snake(EMPTY, FIRE):
-				case Snake(FIRE, EMPTY):
-					thesnake = snakeanimations.fire;
-					thetype ="fire";
-					break;
-				case Snake(EMPTY, EARTH):
-				case Snake(EARTH, EMPTY):
-					thesnake = snakeanimations.earth;
-					thetype ="earth";
-					break;
-				case Snake(WATER, WATER):
-					thesnake = snakeanimations.waterwater;
-					thetype ="waterwater";
-					break;
-				case Snake(FIRE, FIRE):
-					thesnake = snakeanimations.firefire;
-					thetype ="firefire";
-					break;
-				case Snake(EARTH, EARTH):
-					thesnake = snakeanimations.earthearth;
-					thetype ="earthearth";
-					break;
-				case Snake(EARTH, FIRE):
-				case Snake(FIRE, EARTH):
-					thesnake = snakeanimations.earthfire;
-					thetype ="earthfire";
-					break;
-				case Snake(EARTH, WATER):
-				case Snake(WATER, EARTH):
-					thesnake = snakeanimations.earthwater;
-					thetype ="earthwater";
-					break;
-				case Snake(WATER, FIRE):
-				case Snake(FIRE, WATER):
-					thesnake = snakeanimations.waterfire;
-					thetype ="waterfire";
-					break;
-			};
-
-			$("#snake"+i).remove();
-			$("#tile"+i).addSprite("snake"+i, {animation: thesnake, width: w, height: h});
-			$("#tile"+i).attr("rel", i).addClass("tile").addClass(thetype);
-
-			setSnakeRotation(i);
+		
+		if($("#tile"+i).length == 0) {
+			$("#ring").addGroup("tile"+i, { height: 100, width: 100});	
 		}
+		//center the tile
+		//now move it based on pos.y and pos.x
+		$("#tile"+i).css("top", (300+pos.x)+"px").css("left", (300+pos.y)+"px");
+		
+		var leftSnake = ringTiles[i].left;
+		var rightSnake = ringTiles[i].right;
+		
+		var thesnake = null;
+		var thetype = null;
+		var h = 100;
+		var w = 100;
+		var left = leftSnake;
+		var right = rightSnake;
+
+		switch (Snake(left, right))
+		{
+			case Snake(HEAD, HEAD):
+				thesnake = snakeanimations.bighead;
+				thetype = "ouroborous";
+				break;
+			case Snake(TAIL, TAIL):
+				thesnake = snakeanimations.bigtail;
+				thetype = "ouroborous";
+				break;
+			case Snake(EMPTY, EMPTY):
+				thesnake = snakeanimations.bigbody;
+				thetype = "ouroborous";
+				break;
+			case Snake(EMPTY, WATER):
+			case Snake(WATER, EMPTY):
+				thesnake = snakeanimations.water;
+				thetype ="water";
+				break;
+			case Snake(EMPTY, FIRE):
+			case Snake(FIRE, EMPTY):
+				thesnake = snakeanimations.fire;
+				thetype ="fire";
+				break;
+			case Snake(EMPTY, EARTH):
+			case Snake(EARTH, EMPTY):
+				thesnake = snakeanimations.earth;
+				thetype ="earth";
+				break;
+			case Snake(WATER, WATER):
+				thesnake = snakeanimations.waterwater;
+				thetype ="waterwater";
+				break;
+			case Snake(FIRE, FIRE):
+				thesnake = snakeanimations.firefire;
+				thetype ="firefire";
+				break;
+			case Snake(EARTH, EARTH):
+				thesnake = snakeanimations.earthearth;
+				thetype ="earthearth";
+				break;
+			case Snake(EARTH, FIRE):
+			case Snake(FIRE, EARTH):
+				thesnake = snakeanimations.earthfire;
+				thetype ="earthfire";
+				break;
+			case Snake(EARTH, WATER):
+			case Snake(WATER, EARTH):
+				thesnake = snakeanimations.earthwater;
+				thetype ="earthwater";
+				break;
+			case Snake(WATER, FIRE):
+			case Snake(FIRE, WATER):
+				thesnake = snakeanimations.waterfire;
+				thetype ="waterfire";
+				break;
+		};
+
+		$("#snake"+i).remove();
+		$("#tile"+i).addSprite("snake"+i, {animation: thesnake, width: w, height: h});
+		$("#tile"+i).attr("rel", i).addClass("tile").addClass(thetype);
+		
+		if(thetype == "ouroborous") {
+			$("#tile"+i).unbind();
+		}
+
+		setSnakeRotation(i);
 	}
 }
 
@@ -290,7 +317,7 @@ $(document).ready(function(){
 	BuildRing();
 	RebuildRing();
 	
-	$(".tile").click(function(){
+	$(".tile:not(.ouroborous)").click(function(){
 		if (snakeToSwap == -1)
 		{
 			// save it for next click swap
@@ -310,17 +337,28 @@ $(document).ready(function(){
 				setSnakeRotation(thisIdx);
 				setSnakeRotation(snakeToSwap);
 			} else {
-				$("#snake"+snakeToSwap).css("border", "1px solid red");
+				if($("#tile"+snakeToSwap).hasClass("flipped")) {
+					$("#tile"+snakeToSwap).removeClass("flipped");
+				} else {
+					$("#tile"+snakeToSwap).addClass("flipped");
+				}
+				setSnakeRotation(thisIdx);
+				setSnakeRotation(snakeToSwap);
 			}
 
-			$(".tile.selected").removeClass();
+			$(".tile.selected").removeClass('.selected');
 			RebuildRing();
 			ConsumeMatches();
 			snakeToSwap = -1;
 		}
+		
+		/* debugging code */
+		/*ringTiles[$(this).attr('rel')].left = EMPTY;
+		ringTiles[$(this).attr('rel')].right = EMPTY;
+		RebuildRing();*/
 	});
 
-	$(".tile").hover(
+	$(".tile:not(.ouroborous)").hover(
 		// in
 		function(){
 			setSnakeScaledRotation($(this).attr("rel"), 1.1);
