@@ -156,6 +156,45 @@ function Snake(left, right)
 	return left + 10*right;
 }
 
+function ConsumeMatches()
+{
+	var matchMade;
+	
+	do
+	{
+		matchMade = false;
+
+		for(var i  = 0; i < SNAKES_IN_RING-1; i++) {
+			var tile = ringTiles[i];
+			var nextTile = ringTiles[i+1];
+
+			if (tile.left == EMPTY && tile.right == EMPTY) continue;
+
+			if (tile.left == WATER && nextTile.right == EARTH)
+			{
+				// WATER erodes EARTH
+				nextTile.left = EMPTY;
+				nextTile.right = EMPTY;
+				matchMade = true;
+			}
+			else if (tile.left == EARTH && nextTile.right == FIRE)
+			{
+				// EARTH buries FIRE
+				nextTile.left = EMPTY;
+				nextTile.right = EMPTY;
+				matchMade = true;
+			}
+			else if (tile.left == FIRE && nextTile.right == WATER)
+			{
+				// FIRE boils WATER
+				nextTile.left = EMPTY;
+				nextTile.right = EMPTY;
+				matchMade = true;
+			}
+		}
+	} while (matchMade);
+}
+
 function RebuildRing()
 {
 	for(var i  = 0; i < SNAKES_IN_RING; i++) {
@@ -274,6 +313,7 @@ $(document).ready(function(){
 			$(".tile.selected").removeClass();
 
 			RebuildRing();
+			ConsumeMatches();
 			snakeToSwap = -1;
 		}
 	});
