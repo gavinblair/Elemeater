@@ -230,7 +230,7 @@ h1 {
 	border: 1px solid black;
 	overflow: hidden;
 	float: left;
-	background: url(../img/playfield.png) center center no-repeat;
+	background: url(../img/playfield.jpg) center center no-repeat;
 }
 .clear {
 	clear: both;
