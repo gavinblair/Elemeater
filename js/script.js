@@ -144,6 +144,7 @@ function BuildRing()
 		var leftType = EMPTY;
 		var rightType = EMPTY;
 
+		/* the TAIL always starts at position 0 and the HEAD always starts at position 1 */
 		if(i == 0) {
 			leftType = rightType = TAIL;
 		} else if (i == 1) {
@@ -182,92 +183,83 @@ function RebuildRing()
 		//now move it based on pos.y and pos.x
 		$("#tile"+i).css("top", (300+pos.x)+"px").css("left", (300+pos.y)+"px");
 		
+		var leftSnake = ringTiles[i].left;
+		var rightSnake = ringTiles[i].right;
 		
-		/*if(i == 0) {
-			//big tail
-			$("#tile"+i).addSprite("snake"+i, {animation: snakeanimations.bigtail, width: 100, height: 100});
-		} else if (i == 1) {
-			//big head
-			$("#tile"+i).addSprite("snake"+i, {animation: snakeanimations.bighead, width: 100, height: 100});
-		} else*/ {
-			var leftSnake = ringTiles[i].left;
-			var rightSnake = ringTiles[i].right;
-			
-			var thesnake = null;
-			var thetype = null;
-			var h = 100;
-			var w = 100;
-			var left = leftSnake;
-			var right = rightSnake;
+		var thesnake = null;
+		var thetype = null;
+		var h = 100;
+		var w = 100;
+		var left = leftSnake;
+		var right = rightSnake;
 
-			switch (Snake(left, right))
-			{
-				case Snake(HEAD, HEAD):
-					thesnake = snakeanimations.bighead;
-					thetype = "ouroborous";
-					break;
-				case Snake(TAIL, TAIL):
-					thesnake = snakeanimations.bigtail;
-					thetype = "ouroborous";
-					break;
-				case Snake(EMPTY, EMPTY):
-					thesnake = snakeanimations.bigbody;
-					thetype = "ouroborous";
-					break;
-				case Snake(EMPTY, WATER):
-				case Snake(WATER, EMPTY):
-					thesnake = snakeanimations.water;
-					thetype ="water";
-					break;
-				case Snake(EMPTY, FIRE):
-				case Snake(FIRE, EMPTY):
-					thesnake = snakeanimations.fire;
-					thetype ="fire";
-					break;
-				case Snake(EMPTY, EARTH):
-				case Snake(EARTH, EMPTY):
-					thesnake = snakeanimations.earth;
-					thetype ="earth";
-					break;
-				case Snake(WATER, WATER):
-					thesnake = snakeanimations.waterwater;
-					thetype ="waterwater";
-					break;
-				case Snake(FIRE, FIRE):
-					thesnake = snakeanimations.firefire;
-					thetype ="firefire";
-					break;
-				case Snake(EARTH, EARTH):
-					thesnake = snakeanimations.earthearth;
-					thetype ="earthearth";
-					break;
-				case Snake(EARTH, FIRE):
-				case Snake(FIRE, EARTH):
-					thesnake = snakeanimations.earthfire;
-					thetype ="earthfire";
-					break;
-				case Snake(EARTH, WATER):
-				case Snake(WATER, EARTH):
-					thesnake = snakeanimations.earthwater;
-					thetype ="earthwater";
-					break;
-				case Snake(WATER, FIRE):
-				case Snake(FIRE, WATER):
-					thesnake = snakeanimations.waterfire;
-					thetype ="waterfire";
-					break;
-			};
+		switch (Snake(left, right))
+		{
+			case Snake(HEAD, HEAD):
+				thesnake = snakeanimations.bighead;
+				thetype = "ouroborous";
+				break;
+			case Snake(TAIL, TAIL):
+				thesnake = snakeanimations.bigtail;
+				thetype = "ouroborous";
+				break;
+			case Snake(EMPTY, EMPTY):
+				thesnake = snakeanimations.bigbody;
+				thetype = "ouroborous";
+				break;
+			case Snake(EMPTY, WATER):
+			case Snake(WATER, EMPTY):
+				thesnake = snakeanimations.water;
+				thetype ="water";
+				break;
+			case Snake(EMPTY, FIRE):
+			case Snake(FIRE, EMPTY):
+				thesnake = snakeanimations.fire;
+				thetype ="fire";
+				break;
+			case Snake(EMPTY, EARTH):
+			case Snake(EARTH, EMPTY):
+				thesnake = snakeanimations.earth;
+				thetype ="earth";
+				break;
+			case Snake(WATER, WATER):
+				thesnake = snakeanimations.waterwater;
+				thetype ="waterwater";
+				break;
+			case Snake(FIRE, FIRE):
+				thesnake = snakeanimations.firefire;
+				thetype ="firefire";
+				break;
+			case Snake(EARTH, EARTH):
+				thesnake = snakeanimations.earthearth;
+				thetype ="earthearth";
+				break;
+			case Snake(EARTH, FIRE):
+			case Snake(FIRE, EARTH):
+				thesnake = snakeanimations.earthfire;
+				thetype ="earthfire";
+				break;
+			case Snake(EARTH, WATER):
+			case Snake(WATER, EARTH):
+				thesnake = snakeanimations.earthwater;
+				thetype ="earthwater";
+				break;
+			case Snake(WATER, FIRE):
+			case Snake(FIRE, WATER):
+				thesnake = snakeanimations.waterfire;
+				thetype ="waterfire";
+				break;
+		};
 
-			$("#snake"+i).remove();
-			$("#tile"+i).addSprite("snake"+i, {animation: thesnake, width: w, height: h});
-			$("#tile"+i).attr("rel", i).addClass("tile").addClass(thetype);
-			
-			if(thetype == "ouroborous") {
-				$("#snake"+i).unbind('hover').unbind('click');
-			}
-
-			setSnakeRotation(i);
+		$("#snake"+i).remove();
+		$("#tile"+i).addSprite("snake"+i, {animation: thesnake, width: w, height: h});
+		$("#tile"+i).attr("rel", i).addClass("tile").addClass(thetype);
+		
+		if(thetype == "ouroborous") {
+			$("#tile"+i).unbind();
 		}
+
+		setSnakeRotation(i);
 	}
 }
 
