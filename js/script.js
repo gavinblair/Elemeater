@@ -276,10 +276,11 @@ function BuildRing()
 		
 		while (leftType == EMPTY && rightType == EMPTY)
 		{
-			if(Math.random() <= 0.30) {
+			var chance = Math.random();
+			if(chance <= 0.30) {
 				leftType = Math.floor(Math.random()*3 + 1);
 				rightType = EMPTY;
-			} else if(Math.random() <= 0.30) {
+			} else if(chance <= 0.60) {
 				leftType = EMPTY;
 				rightType = Math.floor(Math.random()*3 + 1);
 			} else {
@@ -355,9 +356,9 @@ function IsMatch(center)
 	var matchWithPrev = false;
 	var matchWithNext = false;
 
-	if (cur.right == EMPTY || cur.right == prev.left) matchWithPrev = true;
+	if (cur.right == EMPTY || cur.right == prev.left || IsOroPiece(center-1)) matchWithPrev = true;
 
-	if (cur.left == EMPTY || cur.left == next.right) matchWithNext = true;
+	if (cur.left == EMPTY || cur.left == next.right || IsOroPiece(center+1)) matchWithNext = true;
 	
 	return (matchWithPrev && matchWithNext);
 }
@@ -366,6 +367,7 @@ function MarkMatches()
 {
 	for(var i  = 1; i < SNAKES_IN_RING-1; i++) {
 		ringTiles[i].matched = IsMatch(i);
+	
 		var vTile = tile2logic(ringTiles[i]);
 
 		$("#snake" + i).append("<div style='color: white;'>["+i+"] L:"+vTile.left+" .. R:"+vTile.right+"</div>");
@@ -380,7 +382,6 @@ function ConsumeMatches()
 {
 	MarkMatches();
 
-/*
 	for(var i  = 0; i < SNAKES_IN_RING-1; i++) {
 		if (ringTiles[i].matched)
 		{
@@ -389,7 +390,6 @@ function ConsumeMatches()
 			ringTiles[i].matched = false;
 		}
 	}
-*/
 }
 
 function RebuildRing()
@@ -608,6 +608,7 @@ $(document).ready(function(){
 	ConsumeMatches();
 	BalanceRing();
 	RebuildRing();
+MarkMatches();
 	
 	$(".tile:not(.ouroborous)").click(function(){
 		if (snakeToSwap == -1)
@@ -644,6 +645,7 @@ $(document).ready(function(){
 			ConsumeMatches();
 			BalanceRing();
 			RebuildRing();
+MarkMatches();
 			snakeToSwap = -1;
 		}
 		
