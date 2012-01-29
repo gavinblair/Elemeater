@@ -5,6 +5,24 @@
 var snakeToSwap = -1;
 var ringTiles = new Array();
 
+var glows = {
+	'single' : new $.gameQuery.Animation({
+		imageURL: 'img/glow_single.png',
+		numberOfFrame: 1,
+		delta: 100,
+		rate: 0,
+		offsety: 0,
+		type: $.gameQuery.ANIMATION_VERTICAL
+	}),
+	'double' : new $.gameQuery.Animation({
+		imageURL: 'img/glow_double.png',
+		numberOfFrame: 1,
+		delta: 100,
+		rate: 0,
+		offsety: 0,
+		type: $.gameQuery.ANIMATION_VERTICAL
+	})
+}
 var shadows = {
 	'tail' : new $.gameQuery.Animation({
 		imageURL: 'img/shadow_tail.png',
