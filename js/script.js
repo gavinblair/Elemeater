@@ -27,7 +27,7 @@ var snakeanimations = {
 		rate: 0,
 		type: $.gameQuery.ANIMATION_VERTICAL
 	}),
-	'waterwater' : new $.gameQuery.Animation({ 
+	'earth' : new $.gameQuery.Animation({ 
 		imageURL: "img/snakes.png",
 		numberOfFrame: 1,
 		delta: 100,
@@ -35,7 +35,7 @@ var snakeanimations = {
 		offsety: 0*100,
 		type: $.gameQuery.ANIMATION_HORIZONTAL
 	}),
-	'earth' : new $.gameQuery.Animation({ 
+	'earthearth' : new $.gameQuery.Animation({ 
 		imageURL: "img/snakes.png",
 		numberOfFrame: 1,
 		delta: 100,
@@ -43,7 +43,7 @@ var snakeanimations = {
 		offsety: 1*100,
 		type: $.gameQuery.ANIMATION_HORIZONTAL
 	}),
-	'earthearth' : new $.gameQuery.Animation({ 
+	'earthwater' : new $.gameQuery.Animation({ 
 		imageURL: "img/snakes.png",
 		numberOfFrame: 1,
 		delta: 100,
@@ -51,7 +51,7 @@ var snakeanimations = {
 		offsety: 2*100,
 		type: $.gameQuery.ANIMATION_HORIZONTAL
 	}),
-	'earthwater' : new $.gameQuery.Animation({ 
+	'fire' : new $.gameQuery.Animation({ 
 		imageURL: "img/snakes.png",
 		numberOfFrame: 1,
 		delta: 100,
@@ -59,7 +59,7 @@ var snakeanimations = {
 		offsety: 3*100,
 		type: $.gameQuery.ANIMATION_HORIZONTAL
 	}),
-	'fire' : new $.gameQuery.Animation({ 
+	'earthfire' : new $.gameQuery.Animation({ 
 		imageURL: "img/snakes.png",
 		numberOfFrame: 1,
 		delta: 100,
@@ -67,7 +67,7 @@ var snakeanimations = {
 		offsety: 4*100,
 		type: $.gameQuery.ANIMATION_HORIZONTAL
 	}),
-	'earthfire' : new $.gameQuery.Animation({ 
+	'firefire' : new $.gameQuery.Animation({ 
 		imageURL: "img/snakes.png",
 		numberOfFrame: 1,
 		delta: 100,
@@ -75,7 +75,7 @@ var snakeanimations = {
 		offsety: 5*100,
 		type: $.gameQuery.ANIMATION_HORIZONTAL
 	}),
-	'firefire' : new $.gameQuery.Animation({ 
+	'water' : new $.gameQuery.Animation({ 
 		imageURL: "img/snakes.png",
 		numberOfFrame: 1,
 		delta: 100,
@@ -83,7 +83,7 @@ var snakeanimations = {
 		offsety: 6*100,
 		type: $.gameQuery.ANIMATION_HORIZONTAL
 	}),
-	'water' : new $.gameQuery.Animation({ 
+	'waterfire' : new $.gameQuery.Animation({ 
 		imageURL: "img/snakes.png",
 		numberOfFrame: 1,
 		delta: 100,
@@ -91,7 +91,7 @@ var snakeanimations = {
 		offsety: 7*100,
 		type: $.gameQuery.ANIMATION_HORIZONTAL
 	}),
-	'waterfire' : new $.gameQuery.Animation({ 
+	'waterwater' : new $.gameQuery.Animation({ 
 		imageURL: "img/snakes.png",
 		numberOfFrame: 1,
 		delta: 100,
@@ -105,7 +105,7 @@ var snakeanimations = {
 function setSnakeRotation(idx)
 {
 	var rotationAngle = 360 / SNAKES_IN_RING;
-	var rot = rotationAngle * idx * -1;
+	var rot = rotationAngle * idx * -1 - 15;
 	var snake = $("#tile"+idx+" .sprite");
 
 	snake.css("transform", "rotate("+rot+"deg)");
@@ -119,7 +119,7 @@ function setSnakeRotation(idx)
 function setSnakeScaledRotation(idx, scalar)
 {
 	var rotationAngle = 360 / SNAKES_IN_RING;
-	var rot = rotationAngle * idx * -1;
+	var rot = rotationAngle * idx * -1 - 15;
 	var snake = $("#tile"+idx+" .sprite");
 
 	snake.css("transform", "rotate("+rot+"deg) scale("+scalar+", "+scalar+")");
@@ -138,7 +138,7 @@ function BuildRing()
 
 		while (leftType == EMPTY && rightType == EMPTY)
 		{
-			if(Math.random() <= 0.60) {
+			if(Math.random() <= 0.40) {
 				leftType = Math.floor(Math.random()*4);
 				rightType = EMPTY;
 			} else {
@@ -175,6 +175,7 @@ function RebuildRing()
 			var rightSnake = ringTiles[i].right;
 			
 			var thesnake = null;
+			var thetype = null;
 			var h = 100;
 			var w = 100;
 			var left = leftSnake;
@@ -185,41 +186,50 @@ function RebuildRing()
 				case Snake(EMPTY, WATER):
 				case Snake(WATER, EMPTY):
 					thesnake = snakeanimations.water;
+					thetype ="water";
 					break;
 				case Snake(EMPTY, FIRE):
 				case Snake(FIRE, EMPTY):
 					thesnake = snakeanimations.fire;
+					thetype ="fire";
 					break;
 				case Snake(EMPTY, EARTH):
 				case Snake(EARTH, EMPTY):
 					thesnake = snakeanimations.earth;
+					thetype ="earth";
 					break;
 				case Snake(WATER, WATER):
 					thesnake = snakeanimations.waterwater;
+					thetype ="waterwater";
 					break;
 				case Snake(FIRE, FIRE):
 					thesnake = snakeanimations.firefire;
+					thetype ="firefire";
 					break;
 				case Snake(EARTH, EARTH):
 					thesnake = snakeanimations.earthearth;
+					thetype ="earthearth";
 					break;
 				case Snake(EARTH, FIRE):
 				case Snake(FIRE, EARTH):
 					thesnake = snakeanimations.earthfire;
+					thetype ="earthfire";
 					break;
 				case Snake(EARTH, WATER):
 				case Snake(WATER, EARTH):
 					thesnake = snakeanimations.earthwater;
+					thetype ="earthwater";
 					break;
 				case Snake(WATER, FIRE):
 				case Snake(FIRE, WATER):
 					thesnake = snakeanimations.waterfire;
+					thetype ="waterfire";
 					break;
 			};
 
 			$("#snake"+i).remove();
 			$("#tile"+i).addSprite("snake"+i, {animation: thesnake, width: w, height: h});
-			$("#tile"+i).attr("rel", i).addClass("tile");
+			$("#tile"+i).attr("rel", i).addClass("tile").addClass(thetype);
 
 			setSnakeRotation(i);
 		}
@@ -246,7 +256,8 @@ $(document).ready(function(){
 		{
 			// save it for next click swap
 			snakeToSwap = $(this).attr("rel");
-			setSnakeScaledRotation(snakeToSwap, 2.0);
+			setSnakeScaledRotation(snakeToSwap, 1.3);
+			$(".tile.selected").removeClass("selected");
 			$(this).addClass("selected");
 		}
 		else
@@ -270,7 +281,7 @@ $(document).ready(function(){
 	$(".tile").hover(
 		// in
 		function(){
-			setSnakeScaledRotation($(this).attr("rel"), 1.5);
+			setSnakeScaledRotation($(this).attr("rel"), 1.1);
 		},
 		// out
 		function(){
