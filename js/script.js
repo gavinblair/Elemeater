@@ -5,6 +5,40 @@
 var snakeToSwap = -1;
 var ringTiles = new Array();
 
+var glows = {
+	'single' : new $.gameQuery.Animation({
+		imageURL: 'img/glow_single.png',
+		numberOfFrame: 1,
+		delta: 100,
+		rate: 0,
+		offsety: 0,
+		type: $.gameQuery.ANIMATION_VERTICAL
+	}),
+	'doubleright' : new $.gameQuery.Animation({
+		imageURL: 'img/glow_doubleright.png',
+		numberOfFrame: 1,
+		delta: 100,
+		rate: 0,
+		offsety: 0,
+		type: $.gameQuery.ANIMATION_VERTICAL
+	}),
+	'doubleleft' : new $.gameQuery.Animation({
+		imageURL: 'img/glow_doubleleft.png',
+		numberOfFrame: 1,
+		delta: 100,
+		rate: 0,
+		offsety: 0,
+		type: $.gameQuery.ANIMATION_VERTICAL
+	}),
+	'doubleboth' : new $.gameQuery.Animation({
+		imageURL: 'img/glow_double.png',
+		numberOfFrame: 1,
+		delta: 100,
+		rate: 0,
+		offsety: 0,
+		type: $.gameQuery.ANIMATION_VERTICAL
+	}),
+}
 var shadows = {
 	'tail' : new $.gameQuery.Animation({
 		imageURL: 'img/shadow_tail.png',
@@ -47,6 +81,13 @@ var shadows = {
 		type: $.gameQuery.ANIMATION_VERTICAL
 	})
 }
+var explosion = new $.gameQuery.Animation({
+	imageURL: 'img/splosion.png',
+	numberOfFrame: 8,
+	delta: 100,
+	rate: 100,
+	type: $.gameQuery.ANIMATION_VERTICAL | $.gameQuery.ANIMATION_ONCE
+});
 var snakeanimations = {
 	'bigtail' : new $.gameQuery.Animation({ 
 		imageURL: "img/bigtail.png",
@@ -311,6 +352,9 @@ function ConsumeMatches()
 
 function RebuildRing()
 {
+
+	//remove all glows
+	$(".glow").remove();
 	for(var i  = 0; i < SNAKES_IN_RING; i++) {
 		var pos = getPosOfSnake(i+(SNAKES_IN_RING/2));
 		
@@ -427,6 +471,37 @@ function RebuildRing()
 
 		setSnakeRotation(i);
 	}
+}
+
+function glowsnake(idx, which){
+	//single or double?
+	var glow;
+	if(ringTiles[idx].left == EMPTY || ringTiles[idx].right == EMPTY) {
+		glow = glows.single;
+	} else if(ringTiles[idx].left != EMPTY && ringTiles[idx].right != EMPTY) {
+		if(which == undefined || which == "right") {
+			glow = glows.doubleright;
+		} else if(which == "left") {
+			glow = glows.doubleleft;
+		} else {
+			glow = glows.doubleboth;
+		}
+	}
+	$("#tile"+idx).addSprite("glow"+idx, {animation: glow, width: 100, height: 100});
+	$("#glow"+idx).addClass("glow");
+	setSnakeRotation(idx);
+	
+}
+
+function explodeTile(idx){
+	$("#shadow"+idx).remove();
+	$("#glow"+idx).remove();
+	$("#snake"+idx).remove();
+	$("#explosion").remove();
+	$("#tile"+idx).addSprite("explosion",
+		{animation: explosion, width: 100, height: 100}
+	);
+	$("#tile"+idx).setAnimation("explosion");
 }
 
 var clicksound;
