@@ -156,6 +156,35 @@ function Snake(left, right)
 	return left + 10*right;
 }
 
+// ring needs to have an even number of empty tiles on front and back of array
+//	this is gross.
+function RebalanceRing()
+{
+	var frontCount = 0;
+	var backCount = 0;
+
+	while(ringTiles[0].left == EMPTY && ringTiles[0].right == EMPTY)
+	{
+		ringTiles.shift();
+	}
+
+	while(ringTiles[ringTiles.length-1].left == EMPTY && ringTiles[ringTiles.length-1].right == EMPTY)
+	{
+		ringTiles.pop();
+	}
+
+	var numberOfEmpties = SNAKES_IN_RING - ringTiles.length;
+	var numberOnBack = numberOfEmpties/2;
+	var numberOnFront = numberOfEmpties - numberOnBack;
+
+	for(var i  = 0; i < numberOnBack; i++) {
+		ringTiles.push({left:EMPTY, right:EMPTY});
+	}
+	for(var i  = 0; i < numberOnFront; i++) {
+		ringTiles.splice(0, 0, {left:EMPTY, right:EMPTY});
+	}
+}
+
 function ConsumeMatches()
 {
 	var matchMade;
@@ -164,35 +193,27 @@ function ConsumeMatches()
 	{
 		matchMade = false;
 
-		for(var i  = 0; i < SNAKES_IN_RING-1; i++) {
+		for(var i  = 0; i < ringTiles.length-1; i++) {
 			var tile = ringTiles[i];
 			var nextTile = ringTiles[i+1];
 
 			if (tile.left == EMPTY && tile.right == EMPTY) continue;
 
-			if (tile.left == WATER && nextTile.right == EARTH)
+			if ((tile.left == WATER && nextTile.right == EARTH) || // WATER erodes EARTH
+				(tile.left == EARTH && nextTile.right == FIRE)  || // EARTH buries FIRE
+				(tile.left == FIRE && nextTile.right == WATER) // FIRE boils WATER
+			)
 			{
-				// WATER erodes EARTH
 				nextTile.left = EMPTY;
 				nextTile.right = EMPTY;
 				matchMade = true;
-			}
-			else if (tile.left == EARTH && nextTile.right == FIRE)
-			{
-				// EARTH buries FIRE
-				nextTile.left = EMPTY;
-				nextTile.right = EMPTY;
-				matchMade = true;
-			}
-			else if (tile.left == FIRE && nextTile.right == WATER)
-			{
-				// FIRE boils WATER
-				nextTile.left = EMPTY;
-				nextTile.right = EMPTY;
-				matchMade = true;
+				ringTiles.splice(i+1, 1);
+				break;
 			}
 		}
 	} while (matchMade);
+
+	RebalanceRing();
 }
 
 function RebuildRing()
