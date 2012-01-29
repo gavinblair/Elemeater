@@ -244,6 +244,9 @@ h1 {
 	z-index: 9999;
 	opacity: 1;
 }
+.tile.selected:hover {
+	background: url(../img/flip.png) no-repeat center center;
+}
 .tile {
 	opacity: .85;
 }
