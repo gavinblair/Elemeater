@@ -251,7 +251,13 @@ h1 {
 	opacity: .85;
 }
 
-
+#sound {
+	position: absolute;
+	top: 1em;
+	left: 1em;
+	cursor: pointer;
+	z-index: 9999;
+}
 
 
 

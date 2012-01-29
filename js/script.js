@@ -321,8 +321,28 @@ $(document).ready(function(){
 	transpose.load();
 	
 	colourchange = document.createElement('audio');
-	colourchange.setAttribute('src', 'ogg/colourchange.ogg');
+	colourchange.setAttribute('src', 'ogg/fwoof.ogg');
 	colourchange.load();
+	
+	$("#playground").append("<img src='img/sound_on.png' id='sound' />");
+	
+	$("#sound").live("click", function(){
+		if($(this).attr("src") == "img/sound_on.png") {
+			clicksound.volume = 0;
+			transpose.volume = 0;
+			music.volume = 0;
+			music.pause();
+			colourchange.volume = 0;
+			$(this).attr("src", "img/sound_off.png");
+		} else {
+			clicksound.volume = 1;
+			transpose.volume = 1;
+			music.volume = .3;
+			music.play();
+			colourchange.volume = 1;
+			$(this).attr("src", "img/sound_on.png");
+		}
+	});
 	
 	$("#playground").playground({height: PLAYGROUND_HEIGHT, width: PLAYGROUND_WIDTH});
 	
