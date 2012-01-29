@@ -1,0 +1,11 @@
+Rules for Elemeater
+
+Water > Rock
+Rock > Fire
+Fire > Water
+
+Match colours
+
+The goal is to eliminate all the elemental tiles which causes the green Ouroboros snake to grow. If you can get it's head to eat its tail you will have defeated the Ouroboros snake!
+
+Click on a elemental snake tile to rotate it with the goal of matching  the open section with a matching open section of the same colour. Once a match is made the tiles will disappear and the Ouroboros will grow.
