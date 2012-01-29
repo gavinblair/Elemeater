@@ -200,7 +200,18 @@ function setSnakeRotation(idx)
 	snake.css("-moz-transform", "rotate("+rot+"deg)"); /* Firefox */
 	snake.css("-webkit-transform", "rotate("+rot+"deg)"); /* Safari and Chrome */
 	snake.css("-o-transform", "rotate("+rot+"deg)"); /* Opera */
-			
+	
+	
+	//flip ouroborus head?
+	if($(".ouroborous").length > SNAKES_IN_RING/2){
+		//flip the head
+		var thehead = $("#bighead");
+		thehead.css("transform", "scale(-1,1)");
+		thehead.css("-ms-transform", "scale(-1,1)"); /* IE 9 */
+		thehead.css("-moz-transform", "scale(-1,1)"); /* Firefox */
+		thehead.css("-webkit-transform", "scale(-1,1)"); /* Safari and Chrome */
+		thehead.css("-o-transform", "scale(-1,1)"); /* Opera */
+	}
 }
 
 function setSnakeScaledRotation(idx, scalar)
@@ -218,6 +229,18 @@ function setSnakeScaledRotation(idx, scalar)
 	snake.css("-moz-transform", "rotate("+rot+"deg) scale("+scalar+", "+scalar+")"); /* Firefox */
 	snake.css("-webkit-transform", "rotate("+rot+"deg) scale("+scalar+", "+scalar+")"); /* Safari and Chrome */
 	snake.css("-o-transform", "rotate("+rot+"deg) scale("+scalar+", "+scalar+")"); /* Opera */
+	
+	
+	//flip ouroborus head?
+	if($(".ouroborous").length > SNAKES_IN_RING/2){
+		//flip the head
+		var thehead = $("#bighead");
+		thehead.css("transform", "scale(-1,1)");
+		thehead.css("-ms-transform", "scale(-1,1)"); /* IE 9 */
+		thehead.css("-moz-transform", "scale(-1,1)"); /* Firefox */
+		thehead.css("-webkit-transform", "scale(-1,1)"); /* Safari and Chrome */
+		thehead.css("-o-transform", "scale(-1,1)"); /* Opera */
+	}
 }
 
 // first time
@@ -440,7 +463,7 @@ function RebuildRing()
 		if(thetype == "ouroborous") {
 			$("#tile"+i).unbind();
 		}
-
+		
 		setSnakeRotation(i);
 	}
 }
