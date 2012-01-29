@@ -14,14 +14,30 @@ var glows = {
 		offsety: 0,
 		type: $.gameQuery.ANIMATION_VERTICAL
 	}),
-	'double' : new $.gameQuery.Animation({
+	'doubleright' : new $.gameQuery.Animation({
+		imageURL: 'img/glow_doubleright.png',
+		numberOfFrame: 1,
+		delta: 100,
+		rate: 0,
+		offsety: 0,
+		type: $.gameQuery.ANIMATION_VERTICAL
+	}),
+	'doubleleft' : new $.gameQuery.Animation({
+		imageURL: 'img/glow_doubleleft.png',
+		numberOfFrame: 1,
+		delta: 100,
+		rate: 0,
+		offsety: 0,
+		type: $.gameQuery.ANIMATION_VERTICAL
+	}),
+	'doubleboth' : new $.gameQuery.Animation({
 		imageURL: 'img/glow_double.png',
 		numberOfFrame: 1,
 		delta: 100,
 		rate: 0,
 		offsety: 0,
 		type: $.gameQuery.ANIMATION_VERTICAL
-	})
+	}),
 }
 var shadows = {
 	'tail' : new $.gameQuery.Animation({
@@ -422,17 +438,24 @@ function RebuildRing()
 	}
 }
 
-function glowsnake(idx){
+function glowsnake(idx, which){
 	//single or double?
 	var glow;
 	if(ringTiles[idx].left == EMPTY || ringTiles[idx].right == EMPTY) {
 		glow = glows.single;
 	} else if(ringTiles[idx].left != EMPTY && ringTiles[idx].right != EMPTY) {
-		glow = glows.double;
+		if(which == undefined || which == "right") {
+			glow = glows.doubleright;
+		} else if(which == "left") {
+			glow = glows.doubleleft;
+		} else {
+			glow = glows.doubleboth;
+		}
 	}
 	$("#tile"+idx).addSprite("glow"+idx, {animation: glow, width: 100, height: 100});
 	$("#glow"+idx).addClass("glow");
 	setSnakeRotation(idx);
+	
 }
 
 var clicksound;
