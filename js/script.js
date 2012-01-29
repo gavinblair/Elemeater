@@ -153,7 +153,7 @@ function setSnakeRotation(idx)
 	if (ringTiles[idx].flipped) {
 		rot+=180;
 	}
-
+	rot-=15;
 	snake.css("transform", "rotate("+rot+"deg)");
 	snake.css("-ms-transform", "rotate("+rot+"deg)"); /* IE 9 */
 	snake.css("-moz-transform", "rotate("+rot+"deg)"); /* Firefox */
@@ -171,7 +171,7 @@ function setSnakeScaledRotation(idx, scalar)
 	if (ringTiles[idx].flipped) {
 		rot+=180;
 	}
-	
+	rot-=15;
 	snake.css("transform", "rotate("+rot+"deg) scale("+scalar+", "+scalar+")");
 	snake.css("-ms-transform", "rotate("+rot+"deg) scale("+scalar+", "+scalar+")"); /* IE 9 */
 	snake.css("-moz-transform", "rotate("+rot+"deg) scale("+scalar+", "+scalar+")"); /* Firefox */
@@ -432,20 +432,12 @@ $(document).ready(function(){
 	
 	$("#sound").live("click", function(){
 		if($(this).attr("src") == "img/sound_on.png") {
-			clicksound.volume = 0;
-			transpose.volume = 0;
-			endlevel.volume = 0;
 			music.volume = 0;
 			music.pause();
-			colourchange.volume = 0;
 			$(this).attr("src", "img/sound_off.png");
 		} else {
-			clicksound.volume = 1;
-			transpose.volume = 1;
-			endlevel.volume = 1;
 			music.volume = .3;
 			music.play();
-			colourchange.volume = 1;
 			$(this).attr("src", "img/sound_on.png");
 		}
 	});
