@@ -196,10 +196,16 @@ function endgame(){
 	$("#ring").addSprite(
 		"snakeend", {animation: snakeend, width: 200, height: 100}
 	);
-	$("#snakeend").css("top", PLAYGROUND_HEIGHT-100).css("left", "50%").css("margin-left", "-100px");
-	$("#bighead").hide();
-	$("#bigtail").hide();
+	$("#snakeend").css("top", PLAYGROUND_HEIGHT-100).css("left", "50%").css("margin-left", "-100px").css("z-index", "9999");
+	//hide the head and tail
+	for(var i  = 0; i < SNAKES_IN_RING; i++) {
+		if(ringTiles[i].left == HEAD || ringTiles[i].left == TAIL) {
+			$("#tile"+i).hide();
+		}
+	}
 	endlevel.play();
+	alert("YOU WIN!");
+	restartgame();
 }
 
 function setSnakeRotation(idx)
@@ -398,6 +404,7 @@ function ConsumeMatches()
 		for(var i  = 0; i < SNAKES_IN_RING-1; i++) {
 			if (ringTiles[i].matched)
 			{
+				explodeTile(i);
 				ringTiles[i].left = EMPTY;
 				ringTiles[i].right = EMPTY;
 				ringTiles[i].matched = false;
@@ -405,6 +412,10 @@ function ConsumeMatches()
 		}
 		matched = MarkMatches();
 	}
+	
+	BalanceRing();
+	RebuildRing();
+	
 }
 
 function RebuildRing()
@@ -558,7 +569,6 @@ function explodeTile(idx){
 	$("#tile"+idx).addSprite("explosion",
 		{animation: explosion, width: 100, height: 100}
 	);
-	$("#tile"+idx).setAnimation("explosion");
 }
 
 var clicksound;
@@ -621,9 +631,6 @@ $(document).ready(function(){
 
 	BuildRing();
 	ConsumeMatches();
-	BalanceRing();
-	RebuildRing();
-MarkMatches();
 	
 	$(".tile:not(.ouroborous)").click(function(){
 		if (snakeToSwap == -1)
@@ -658,9 +665,6 @@ MarkMatches();
 			$(".tile.selected").removeClass('.selected');
 
 			ConsumeMatches();
-			BalanceRing();
-			RebuildRing();
-MarkMatches();
 			snakeToSwap = -1;
 		}
 		
