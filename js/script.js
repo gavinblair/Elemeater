@@ -363,16 +363,21 @@ function RebuildRing()
 var clicksound;
 var transpose;
 var colourchange;
+var endlevel;
 $(document).ready(function(){
 
 	var music = document.createElement('audio');
 	music.setAttribute('src', 'ogg/music.ogg');
 	music.volume=0.3;
-	music.play();
+	music.load();
 	
 	clicksound = document.createElement('audio');
 	clicksound.setAttribute('src', 'ogg/click.ogg');
 	clicksound.load();
+	
+	endlevel = document.createElement('audio');
+	endlevel.setAttribute('src', 'ogg/endlevel.ogg');
+	endlevel.load();
 	
 	transpose = document.createElement('audio');
 	transpose.setAttribute('src', 'ogg/transpose.ogg');
@@ -388,6 +393,7 @@ $(document).ready(function(){
 		if($(this).attr("src") == "img/sound_on.png") {
 			clicksound.volume = 0;
 			transpose.volume = 0;
+			endlevel.volume = 0;
 			music.volume = 0;
 			music.pause();
 			colourchange.volume = 0;
@@ -395,6 +401,7 @@ $(document).ready(function(){
 		} else {
 			clicksound.volume = 1;
 			transpose.volume = 1;
+			endlevel.volume = 1;
 			music.volume = .3;
 			music.play();
 			colourchange.volume = 1;
@@ -409,7 +416,15 @@ $(document).ready(function(){
 		width: PLAYGROUND_WIDTH, height: PLAYGROUND_HEIGHT
 	});
 	
-	$.playground().startGame(function() { });
+	$("#splash").click(function(){
+		$.playground().startGame(function() {
+			$("#splash").fadeOut('slow');
+			endlevel.play();
+			setTimeout(function(){
+				music.play();
+			}, 300);
+		});
+	});
 
 	BuildRing();
 	RebuildRing();
