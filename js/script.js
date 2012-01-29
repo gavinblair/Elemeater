@@ -291,23 +291,25 @@ $(document).ready(function(){
 	RebuildRing();
 	
 	$(".tile").click(function(){
+		var thisSnake = $(this).attr("rel");
+		if (ringTiles[thisSnake].left == EMPTY && ringTiles[thisSnake].right == EMPTY) return;
+
 		if (snakeToSwap == -1)
 		{
 			// save it for next click swap
-			snakeToSwap = $(this).attr("rel");
+			snakeToSwap = thisSnake;
 			setSnakeScaledRotation(snakeToSwap, 1.3);
 			$(".tile.selected").removeClass("selected");
 			$(this).addClass("selected");
 		}
 		else
 		{
-			var thisIdx = $(this).attr("rel");
-			if(thisIdx != snakeToSwap) {
-				var tmpTile = ringTiles[Number(thisIdx)];
-				ringTiles[Number(thisIdx)] = ringTiles[Number(snakeToSwap)];
+			if(thisSnake != snakeToSwap) {
+				var tmpTile = ringTiles[Number(thisSnake)];
+				ringTiles[Number(thisSnake)] = ringTiles[Number(snakeToSwap)];
 				ringTiles[Number(snakeToSwap)] = tmpTile;
 				
-				setSnakeRotation(thisIdx);
+				setSnakeRotation(thisSnake);
 				setSnakeRotation(snakeToSwap);
 			} else {
 				$("#snake"+snakeToSwap).css("border", "1px solid red");
@@ -323,6 +325,9 @@ $(document).ready(function(){
 	$(".tile").hover(
 		// in
 		function(){
+			var thisSnake = $(this).attr("rel");
+			if (ringTiles[thisSnake].left == EMPTY && ringTiles[thisSnake].right == EMPTY) return;
+
 			setSnakeScaledRotation($(this).attr("rel"), 1.1);
 		},
 		// out
