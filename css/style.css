@@ -231,7 +231,13 @@ h1 {
 	overflow: hidden;
 	
 }
-
+.tile.selected {
+	z-index: 9999;
+	opacity: 1;
+}
+.tile {
+	opacity: .8;
+}
 
 
 

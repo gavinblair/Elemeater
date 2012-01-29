@@ -10,92 +10,92 @@ var snakeanimations = {
 		imageURL: "img/bigtail.png",
 		numberOfFrame: 1,
 		delta: 100,
-		rate: 1,
+		rate: 0,
 		type: $.gameQuery.ANIMATION_VERTICAL
 	}),
 	'bighead' : new $.gameQuery.Animation({ 
 		imageURL: "img/bighead.png",
 		numberOfFrame: 1,
 		delta: 100,
-		rate: 1,
+		rate: 0,
 		type: $.gameQuery.ANIMATION_VERTICAL
 	}),
 	'bigbody' : new $.gameQuery.Animation({ 
 		imageURL: "img/bigbody.png",
 		numberOfFrame: 1,
 		delta: 100,
-		rate: 1,
+		rate: 0,
 		type: $.gameQuery.ANIMATION_VERTICAL
 	}),
 	'water' : new $.gameQuery.Animation({ 
-		imageURL: "img/singles.png",
+		imageURL: "img/snakes.png",
 		numberOfFrame: 1,
 		delta: 100,
-		rate: 150+Math.floor(Math.random()*10),
+		rate: 0,
 		offsety: 0*100,
 		type: $.gameQuery.ANIMATION_HORIZONTAL
 	}),
 	'fire' : new $.gameQuery.Animation({ 
-		imageURL: "img/singles.png",
+		imageURL: "img/snakes.png",
 		numberOfFrame: 1,
 		delta: 100,
-		rate: 150+Math.floor(Math.random()*10),
+		rate: 0,
 		offsety: 1*100,
 		type: $.gameQuery.ANIMATION_HORIZONTAL
 	}),
 	'earth' : new $.gameQuery.Animation({ 
-		imageURL: "img/singles.png",
+		imageURL: "img/snakes.png",
 		numberOfFrame: 1,
 		delta: 100,
-		rate: 150+Math.floor(Math.random()*10),
+		rate: 0,
 		offsety: 2*100,
 		type: $.gameQuery.ANIMATION_HORIZONTAL
 	}),
 	'waterwater' : new $.gameQuery.Animation({ 
-		imageURL: "img/doubles.png",
+		imageURL: "img/snakes.png",
 		numberOfFrame: 1,
 		delta: 100,
-		rate: 150+Math.floor(Math.random()*10),
+		rate: 0,
 		offsety: 0*100,
 		type: $.gameQuery.ANIMATION_HORIZONTAL
 	}),
 	'waterfire' : new $.gameQuery.Animation({ 
-		imageURL: "img/doubles.png",
+		imageURL: "img/snakes.png",
 		numberOfFrame: 1,
 		delta: 100,
-		rate: 150+Math.floor(Math.random()*10),
+		rate: 0,
 		offsety: 1*100,
 		type: $.gameQuery.ANIMATION_HORIZONTAL
 	}),
 	'earthwater' : new $.gameQuery.Animation({ 
-		imageURL: "img/doubles.png",
+		imageURL: "img/snakes.png",
 		numberOfFrame: 1,
 		delta: 100,
-		rate: 150+Math.floor(Math.random()*10),
+		rate: 0,
 		offsety: 2*100,
 		type: $.gameQuery.ANIMATION_HORIZONTAL
 	}),
 	'firefire' : new $.gameQuery.Animation({ 
-		imageURL: "img/doubles.png",
+		imageURL: "img/snakes.png",
 		numberOfFrame: 1,
 		delta: 100,
-		rate: 150+Math.floor(Math.random()*10),
+		rate: 0,
 		offsety: 3*100,
 		type: $.gameQuery.ANIMATION_HORIZONTAL
 	}),
 	'earthfire' : new $.gameQuery.Animation({ 
-		imageURL: "img/doubles.png",
+		imageURL: "img/snakes.png",
 		numberOfFrame: 1,
 		delta: 100,
-		rate: 150+Math.floor(Math.random()*10),
+		rate: 0,
 		offsety: 4*100,
 		type: $.gameQuery.ANIMATION_HORIZONTAL
 	}),
 	'earthearth' : new $.gameQuery.Animation({ 
-		imageURL: "img/doubles.png",
+		imageURL: "img/snakes.png",
 		numberOfFrame: 1,
 		delta: 100,
-		rate: 150+Math.floor(Math.random()*10),
+		rate: 0,
 		offsety: 5*100,
 		type: $.gameQuery.ANIMATION_HORIZONTAL
 	}),
@@ -247,6 +247,7 @@ $(document).ready(function(){
 			// save it for next click swap
 			snakeToSwap = $(this).attr("rel");
 			setSnakeScaledRotation(snakeToSwap, 2.0);
+			$(this).addClass("selected");
 		}
 		else
 		{
@@ -259,6 +260,7 @@ $(document).ready(function(){
 			
 			setSnakeRotation(thisIdx);
 			setSnakeRotation(snakeToSwap);
+			$(".tile.selected").removeClass();
 
 			RebuildRing();
 			snakeToSwap = -1;
