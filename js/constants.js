@@ -11,6 +11,8 @@ var STARTING_MOVES = 20;
 var MIN_COUNT_TO_GET_SPECIAL = 3;
 var MIN_COUNT_TO_GET_EXTRAMOVE = 2;
 
+var HEAD = -1;
+var TAIL = -2;
 var EMPTY = 0;
 var WATER = 1;
 var EARTH = 2;
