@@ -150,9 +150,9 @@ function setSnakeRotation(idx)
 	var rot = rotationAngle * idx * -1;
 	var snake = $("#tile"+idx+" .sprite");
 	
-	if (ringTiles[idx].flipped) {
-		rot+=180;
-	}
+//	if (ringTiles[idx].flipped) {
+//		rot+=180;
+//	}
 	rot-=15;
 	snake.css("transform", "rotate("+rot+"deg)");
 	snake.css("-ms-transform", "rotate("+rot+"deg)"); /* IE 9 */
@@ -168,9 +168,9 @@ function setSnakeScaledRotation(idx, scalar)
 	var rot = rotationAngle * idx * -1;
 	var snake = $("#tile"+idx+" .sprite");
 
-	if (ringTiles[idx].flipped) {
-		rot+=180;
-	}
+//	if (ringTiles[idx].flipped) {
+//		rot+=180;
+//	}
 	rot-=15;
 	snake.css("transform", "rotate("+rot+"deg) scale("+scalar+", "+scalar+")");
 	snake.css("-ms-transform", "rotate("+rot+"deg) scale("+scalar+", "+scalar+")"); /* IE 9 */
@@ -195,18 +195,19 @@ function BuildRing()
 		
 		while (leftType == EMPTY && rightType == EMPTY)
 		{
-			if(Math.random() <= 0.40) {
-				leftType = Math.floor(Math.random()*4);
+			if(Math.random() <= 0.20) {
+				leftType = Math.floor(Math.random()*3 + 1);
 				rightType = EMPTY;
+			} else if(Math.random() <= 0.20) {
+				leftType = EMPTY;
+				rightType = Math.floor(Math.random()*3 + 1);
 			} else {
-				leftType = Math.floor(Math.random()*4);
-				rightType = Math.floor(Math.random()*4);
+				leftType = Math.floor(Math.random()*3 + 1);
+				rightType = Math.floor(Math.random()*3 + 1);
 			}
 		}
 
-		var isFlipped = (Math.random() > 0.5);
-			isFlipped = isFlipped && (leftType != HEAD) && (rightType != TAIL);
-		ringTiles.push({left:leftType, right:rightType, flipped:isFlipped});
+		ringTiles.push({left:leftType, right:rightType, flipped:false});
 	}
 }
 
@@ -251,46 +252,61 @@ function BalanceRing()
 
 function tilename(idx)
 {
-	var tilenames = ["tail", "head", "empty/body", "water", "earth", "fire"];
-	return tilenames[idx+2];
+	var tilenames = ["tail", "body", "head", "empty", "water", "earth", "fire"];
+	return tilenames[idx+3];
+}
+
+function tile2visual(tile)
+{
+	if (tile.flipped) {
+		return {left:tile.right, right:tile.left};
+	} else {
+		return tile;
+	}
+}
+
+function IsMatch(center)
+{
+	var prev = tile2visual(ringTiles[center-1]);
+	var cur = tile2visual(ringTiles[center]);
+	var next = tile2visual(ringTiles[center+1]);
+
+	var matchWithPrev = false;
+	var matchWithNext = false;
+
+	if (cur.right == EMPTY || cur.right == prev.left) matchWithPrev = true;
+
+	if (cur.left == EMPTY || cur.left == next.right) matchWithNext = true;
+	
+	return (matchWithPrev && matchWithNext);
+}
+
+function MarkMatches()
+{
+	for(var i  = 1; i < SNAKES_IN_RING-2; i++) {
+		ringTiles[i].matched = IsMatch(i);
+		var vTile = tile2visual(ringTiles[i]);
+
+		$("#snake" + i).append("<div style='color: white;'>["+i+"] L:"+vTile.left+" .. R:"+vTile.right+"</div>");
+		if (ringTiles[i].matched)
+			$("#snake" + i).append("<div style='color: white;'>MATCH</div>");
+	}
 }
 
 function ConsumeMatches()
 {
-	var matchMade;
-	
-	do
-	{
-		matchMade = false;
+	MarkMatches();
 
-		for(var i  = 0; i < SNAKES_IN_RING-1; i++) {
-			var tile = ringTiles[i];
-			var nextTile = ringTiles[i+1];
-
-			var visualLeft = tile.flipped ? tile.right : tile.left;
-			var visualRight = nextTile.flipped ? nextTile.left : nextTile.right;
-
-			if ((visualLeft == WATER && visualRight == EARTH) ||	// WATER erodes EARTH
-				(visualLeft == EARTH && visualRight == FIRE) ||  	// EARTH buries FIRE
-				(visualLeft == FIRE && visualRight == WATER)		// FIRE boils WATER
-			)
-			{
-				nextTile.left = EMPTY;
-				nextTile.right = EMPTY;
-				matchMade = true;
-			}
-
-			if ((visualLeft == EARTH && visualRight == WATER) ||	// WATER erodes EARTH
-				(visualLeft == FIRE && visualRight == EARTH) ||  	// EARTH buries FIRE
-				(visualLeft == WATER && visualRight == FIRE)		// FIRE boils WATER
-			)
-			{
-				tile.left = EMPTY;
-				tile.right = EMPTY;
-				matchMade = true;
-			}
+/*
+	for(var i  = 0; i < SNAKES_IN_RING-1; i++) {
+		if (ringTiles[i].matched)
+		{
+			ringTiles[i].left = EMPTY;
+			ringTiles[i].right = EMPTY;
+			ringTiles[i].matched = false;
 		}
-	} while (matchMade);
+	}
+*/
 }
 
 function RebuildRing()
@@ -334,18 +350,24 @@ function RebuildRing()
 				shadow = shadows.body;
 				break;
 			case Snake(EMPTY, WATER):
+				// rotate
+				ringTiles[i].flipped = true;
 			case Snake(WATER, EMPTY):
 				thesnake = snakeanimations.water;
 				thetype ="water";
 				shadow = shadows.single;
 				break;
 			case Snake(EMPTY, FIRE):
+				// rotate
+				ringTiles[i].flipped = true;
 			case Snake(FIRE, EMPTY):
 				thesnake = snakeanimations.fire;
 				thetype ="fire";
 				shadow = shadows.single;
 				break;
 			case Snake(EMPTY, EARTH):
+				// rotate
+				ringTiles[i].flipped = true;
 			case Snake(EARTH, EMPTY):
 				thesnake = snakeanimations.earth;
 				thetype ="earth";
@@ -366,20 +388,26 @@ function RebuildRing()
 				thetype ="earthearth";
 				shadow = shadows.double;
 				break;
-			case Snake(EARTH, FIRE):
 			case Snake(FIRE, EARTH):
+				// rotate
+				ringTiles[i].flipped = true;
+			case Snake(EARTH, FIRE):
 				thesnake = snakeanimations.earthfire;
 				thetype ="earthfire";
 				shadow = shadows.double;
 				break;
-			case Snake(EARTH, WATER):
 			case Snake(WATER, EARTH):
+				// rotate
+				ringTiles[i].flipped = true;
+			case Snake(EARTH, WATER):
 				thesnake = snakeanimations.earthwater;
 				thetype ="earthwater";
 				shadow = shadows.double;
 				break;
-			case Snake(WATER, FIRE):
 			case Snake(FIRE, WATER):
+				// rotate
+				ringTiles[i].flipped = true;
+			case Snake(WATER, FIRE):
 				thesnake = snakeanimations.waterfire;
 				thetype ="waterfire";
 				shadow = shadows.double;
@@ -463,6 +491,7 @@ $(document).ready(function(){
 	ConsumeMatches();
 	BalanceRing();
 	RebuildRing();
+MarkMatches();
 	
 	$(".tile:not(.ouroborous)").click(function(){
 		if (snakeToSwap == -1)
