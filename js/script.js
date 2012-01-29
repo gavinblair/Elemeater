@@ -81,6 +81,13 @@ var shadows = {
 		type: $.gameQuery.ANIMATION_VERTICAL
 	})
 }
+var explosion = new $.gameQuery.Animation({
+	imageURL: 'img/splosion.png',
+	numberOfFrame: 8,
+	delta: 100,
+	rate: 100,
+	type: $.gameQuery.ANIMATION_VERTICAL | $.gameQuery.ANIMATION_ONCE
+});
 var snakeanimations = {
 	'bigtail' : new $.gameQuery.Animation({ 
 		imageURL: "img/bigtail.png",
@@ -456,6 +463,17 @@ function glowsnake(idx, which){
 	$("#glow"+idx).addClass("glow");
 	setSnakeRotation(idx);
 	
+}
+
+function explodeTile(idx){
+	$("#shadow"+idx).remove();
+	$("#glow"+idx).remove();
+	$("#snake"+idx).remove();
+	$("#explosion").remove();
+	$("#tile"+idx).addSprite("explosion",
+		{animation: explosion, width: 100, height: 100}
+	);
+	$("#tile"+idx).setAnimation("explosion");
 }
 
 var clicksound;
