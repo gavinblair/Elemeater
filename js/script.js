@@ -105,7 +105,7 @@ var snakeanimations = {
 function setSnakeRotation(idx)
 {
 	var rotationAngle = 360 / SNAKES_IN_RING;
-	var rot = rotationAngle * idx * -1 - 15;
+	var rot = rotationAngle * idx * -1;
 	var snake = $("#tile"+idx+" .sprite");
 
 	snake.css("transform", "rotate("+rot+"deg)");
@@ -119,7 +119,7 @@ function setSnakeRotation(idx)
 function setSnakeScaledRotation(idx, scalar)
 {
 	var rotationAngle = 360 / SNAKES_IN_RING;
-	var rot = rotationAngle * idx * -1 - 15;
+	var rot = rotationAngle * idx * -1;
 	var snake = $("#tile"+idx+" .sprite");
 
 	snake.css("transform", "rotate("+rot+"deg) scale("+scalar+", "+scalar+")");
