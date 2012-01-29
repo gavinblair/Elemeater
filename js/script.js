@@ -5,6 +5,48 @@
 var snakeToSwap = -1;
 var ringTiles = new Array();
 
+var shadows = {
+	'tail' : new $.gameQuery.Animation({
+		imageURL: 'img/shadow_tail.png',
+		numberOfFrame: 1,
+		delta: 100,
+		rate: 0,
+		offsety: 0,
+		type: $.gameQuery.ANIMATION_VERTICAL
+	}),
+	'head' : new $.gameQuery.Animation({
+		imageURL: 'img/shadow_head.png',
+		numberOfFrame: 1,
+		delta: 100,
+		rate: 0,
+		offsety: 0,
+		type: $.gameQuery.ANIMATION_VERTICAL
+	}),
+	'body' : new $.gameQuery.Animation({
+		imageURL: 'img/shadow_body.png',
+		numberOfFrame: 1,
+		delta: 100,
+		rate: 0,
+		offsety: 0,
+		type: $.gameQuery.ANIMATION_VERTICAL
+	}),
+	'single' : new $.gameQuery.Animation({
+		imageURL: 'img/shadow_single.png',
+		numberOfFrame: 1,
+		delta: 100,
+		rate: 0,
+		offsety: 0,
+		type: $.gameQuery.ANIMATION_VERTICAL
+	}),
+	'double' : new $.gameQuery.Animation({
+		imageURL: 'img/shadow_double.png',
+		numberOfFrame: 1,
+		delta: 100,
+		rate: 0,
+		offsety: 0,
+		type: $.gameQuery.ANIMATION_VERTICAL
+	})
+}
 var snakeanimations = {
 	'bigtail' : new $.gameQuery.Animation({ 
 		imageURL: "img/bigtail.png",
@@ -231,67 +273,83 @@ function RebuildRing()
 		var w = 100;
 		var left = leftSnake;
 		var right = rightSnake;
+		var shadow;
 
 		switch (Snake(left, right))
 		{
 			case Snake(HEAD, HEAD):
 				thesnake = snakeanimations.bighead;
 				thetype = "ouroborous";
+				shadow = shadows.head;
 				break;
 			case Snake(TAIL, TAIL):
 				thesnake = snakeanimations.bigtail;
 				thetype = "ouroborous";
+				shadow = shadows.tail;
 				break;
 			case Snake(EMPTY, EMPTY):
 				thesnake = snakeanimations.bigbody;
 				thetype = "ouroborous";
+				shadow = shadows.body;
 				break;
 			case Snake(EMPTY, WATER):
 			case Snake(WATER, EMPTY):
 				thesnake = snakeanimations.water;
 				thetype ="water";
+				shadow = shadows.single;
 				break;
 			case Snake(EMPTY, FIRE):
 			case Snake(FIRE, EMPTY):
 				thesnake = snakeanimations.fire;
 				thetype ="fire";
+				shadow = shadows.single;
 				break;
 			case Snake(EMPTY, EARTH):
 			case Snake(EARTH, EMPTY):
 				thesnake = snakeanimations.earth;
 				thetype ="earth";
+				shadow = shadows.single;
 				break;
 			case Snake(WATER, WATER):
 				thesnake = snakeanimations.waterwater;
 				thetype ="waterwater";
+				shadow = shadows.double;
 				break;
 			case Snake(FIRE, FIRE):
 				thesnake = snakeanimations.firefire;
 				thetype ="firefire";
+				shadow = shadows.double;
 				break;
 			case Snake(EARTH, EARTH):
 				thesnake = snakeanimations.earthearth;
 				thetype ="earthearth";
+				shadow = shadows.double;
 				break;
 			case Snake(EARTH, FIRE):
 			case Snake(FIRE, EARTH):
 				thesnake = snakeanimations.earthfire;
 				thetype ="earthfire";
+				shadow = shadows.double;
 				break;
 			case Snake(EARTH, WATER):
 			case Snake(WATER, EARTH):
 				thesnake = snakeanimations.earthwater;
 				thetype ="earthwater";
+				shadow = shadows.double;
 				break;
 			case Snake(WATER, FIRE):
 			case Snake(FIRE, WATER):
 				thesnake = snakeanimations.waterfire;
 				thetype ="waterfire";
+				shadow = shadows.double;
 				break;
 		};
 
 		$("#snake"+i).remove();
-		$("#tile"+i).addSprite("snake"+i, {animation: thesnake, width: w, height: h});
+		$("#tile"+i).addSprite("shadow"+i, {animation: shadow, width: w, height: h});
+		$("#shadow"+i).addClass("shadow");
+		$("#tile"+i).addSprite("snake"+i, {animation: thesnake, width: w, height: h, class: 'snake'});
+		$("#snake"+i).addClass("snake");
 		$("#tile"+i).attr("rel", i).addClass("tile").addClass(thetype);
 		
 		if(thetype == "ouroborous") {
