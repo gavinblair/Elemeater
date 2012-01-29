@@ -332,6 +332,8 @@ function tile2logic(tile)
 
 function IsMatch(center)
 {
+	if (IsOroPiece(center)) return false;
+
 	var prev = tile2logic(ringTiles[center-1]);
 	var cur = tile2logic(ringTiles[center]);
 	var next = tile2logic(ringTiles[center+1]);
@@ -348,30 +350,43 @@ function IsMatch(center)
 
 function MarkMatches()
 {
+	var wasMatch = false;
 	for(var i  = 1; i < SNAKES_IN_RING-1; i++) {
 		ringTiles[i].matched = IsMatch(i);
-	
-		var vTile = tile2logic(ringTiles[i]);
 
+		if (ringTiles[i].matched)
+		{
+			wasMatch = true;
+		}
+	
+/*
+		var vTile = tile2logic(ringTiles[i]);
 		$("#snake" + i).append("<div style='color: white;'>["+i+"] L:"+vTile.left+" .. R:"+vTile.right+"</div>");
 		if (ringTiles[i].flippedLogic)
 			$("#snake" + i).append("<div style='color: white;'>FLIPPED</div>");
 		if (ringTiles[i].matched)
 			$("#snake" + i).append("<div style='color: white;'>MATCH</div>");
+*/
 	}
+
+	return wasMatch;
 }
 
 function ConsumeMatches()
 {
-	MarkMatches();
+	var matched = MarkMatches();
 
-	for(var i  = 0; i < SNAKES_IN_RING-1; i++) {
-		if (ringTiles[i].matched)
-		{
-			ringTiles[i].left = EMPTY;
-			ringTiles[i].right = EMPTY;
-			ringTiles[i].matched = false;
+	while (matched)
+	{
+		for(var i  = 0; i < SNAKES_IN_RING-1; i++) {
+			if (ringTiles[i].matched)
+			{
+				ringTiles[i].left = EMPTY;
+				ringTiles[i].right = EMPTY;
+				ringTiles[i].matched = false;
+			}
 		}
+		matched = MarkMatches();
 	}
 }
 
