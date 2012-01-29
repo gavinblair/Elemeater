@@ -87,6 +87,14 @@ var explosion = new $.gameQuery.Animation({
 	delta: 100,
 	rate: 100,
 	type: $.gameQuery.ANIMATION_VERTICAL | $.gameQuery.ANIMATION_ONCE
+
+});
+var snakeend = new $.gameQuery.Animation({
+	imageURL: 'img/snake_end.png',
+	numberOfFrame: 1,
+	delta: 200,
+	rate: 0,
+	type: $.gameQuery.ANIMATION_VERTICAL
 });
 var snakeanimations = {
 	'bigtail' : new $.gameQuery.Animation({ 
@@ -184,6 +192,15 @@ var snakeanimations = {
 	}),
 };
 
+function endgame(){
+	$("#ring").addSprite(
+		"snakeend", {animation: snakeend, width: 200, height: 100}
+	);
+	$("#snakeend").css("top", PLAYGROUND_HEIGHT-100).css("left", "50%").css("margin-left", "-100px");
+	$("#bighead").hide();
+	$("#bigtail").hide();
+	endlevel.play();
+}
 
 function setSnakeRotation(idx)
 {
