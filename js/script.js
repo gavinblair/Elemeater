@@ -196,6 +196,10 @@ function RebuildRing()
 
 			switch (Snake(left, right))
 			{
+				case Snake(EMPTY, EMPTY):
+					thesnake = snakeanimations.bigbody;
+					thetype = "body";
+					break;
 				case Snake(EMPTY, WATER):
 				case Snake(WATER, EMPTY):
 					thesnake = snakeanimations.water;
@@ -243,6 +247,10 @@ function RebuildRing()
 			$("#snake"+i).remove();
 			$("#tile"+i).addSprite("snake"+i, {animation: thesnake, width: w, height: h});
 			$("#tile"+i).attr("rel", i).addClass("tile").addClass(thetype);
+			
+			if(thetype == "body") {
+				$("#snake"+i).unbind('hover').unbind('click');
+			}
 
 			setSnakeRotation(i);
 		}
@@ -297,6 +305,11 @@ $(document).ready(function(){
 			RebuildRing();
 			snakeToSwap = -1;
 		}
+		
+		/* debugging code */
+		/*ringTiles[$(this).attr('rel')].left = EMPTY;
+		ringTiles[$(this).attr('rel')].right = EMPTY;
+		RebuildRing();*/
 	});
 
 	$(".tile").hover(
