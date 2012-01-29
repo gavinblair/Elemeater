@@ -138,8 +138,13 @@ function BuildRing()
 
 		while (leftType == EMPTY && rightType == EMPTY)
 		{
-			leftType = Math.floor(Math.random()*4);
-			rightType = Math.floor(Math.random()*4);
+			if(Math.random() <= 0.60) {
+				leftType = Math.floor(Math.random()*4);
+				rightType = EMPTY;
+			} else {
+				leftType = Math.floor(Math.random()*4);
+				rightType = Math.floor(Math.random()*4);
+			}
 		}
 
 		ringTiles.push({left:leftType, right:rightType});
