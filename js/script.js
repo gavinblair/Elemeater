@@ -116,17 +116,17 @@ function setSnakeRotation(idx)
 			
 }
 
-function setSnakeDoubleSizeRotation(idx)
+function setSnakeScaledRotation(idx, scalar)
 {
 	var rotationAngle = 360 / SNAKES_IN_RING;
 	var rot = rotationAngle * idx * -1;
 	var snake = $("#tile"+idx+" .sprite");
 
-	snake.css("transform", "rotate("+rot+"deg) scale(2.0, 2.0)");
-	snake.css("-ms-transform", "rotate("+rot+"deg) scale(2.0, 2.0)"); /* IE 9 */
-	snake.css("-moz-transform", "rotate("+rot+"deg) scale(2.0, 2.0)"); /* Firefox */
-	snake.css("-webkit-transform", "rotate("+rot+"deg) scale(2.0, 2.0)"); /* Safari and Chrome */
-	snake.css("-o-transform", "rotate("+rot+"deg) scale(2.0, 2.0)"); /* Opera */
+	snake.css("transform", "rotate("+rot+"deg) scale("+scalar+", "+scalar+")");
+	snake.css("-ms-transform", "rotate("+rot+"deg) scale("+scalar+", "+scalar+")"); /* IE 9 */
+	snake.css("-moz-transform", "rotate("+rot+"deg) scale("+scalar+", "+scalar+")"); /* Firefox */
+	snake.css("-webkit-transform", "rotate("+rot+"deg) scale("+scalar+", "+scalar+")"); /* Safari and Chrome */
+	snake.css("-o-transform", "rotate("+rot+"deg) scale("+scalar+", "+scalar+")"); /* Opera */
 }
 
 // first time
@@ -159,15 +159,15 @@ function Snake(left, right)
 function RebuildRing()
 {
 	for(var i  = 0; i < SNAKES_IN_RING; i++) {
-		var pos = getPosOfSnake(i);
+		var pos = getPosOfSnake(i+(SNAKES_IN_RING/2));
 		$("#ring").addGroup("tile"+i, { height: 100, width: 100});	
 		//center the tile
 		$("#tile"+i).css("top", (300+pos.x)+"px").css("left", (300+pos.y)+"px");
 		//now move it based on pos.y and pos.x
-		if(i == Math.floor(SNAKES_IN_RING/2)) {
+		if(i == 0) {
 			//big tail
 			$("#tile"+i).addSprite("snake"+i, {animation: snakeanimations.bigtail, width: 100, height: 100});
-		} else if (i == Math.floor(SNAKES_IN_RING/2)+1) {
+		} else if (i == 1) {
 			//big head
 			$("#tile"+i).addSprite("snake"+i, {animation: snakeanimations.bighead, width: 100, height: 100});
 		} else {
@@ -245,8 +245,7 @@ $(document).ready(function(){
 		{
 			// save it for next click swap
 			snakeToSwap = $(this).attr("rel");
-
-			setSnakeDoubleSizeRotation(snakeToSwap);
+			setSnakeScaledRotation(snakeToSwap, 2.0);
 		}
 		else
 		{
@@ -264,6 +263,23 @@ $(document).ready(function(){
 			snakeToSwap = -1;
 		}
 	});
+
+	$(".tile").hover(
+		// in
+		function(){
+			setSnakeScaledRotation($(this).attr("rel"), 1.5);
+		},
+		// out
+		function(){
+			var thisSnake = $(this).attr("rel");
+			if (snakeToSwap != thisSnake)
+			{
+				setSnakeRotation(thisSnake);
+			}
+		}
+	);
+
+
 	/*
 	// this sets the id of the loading bar:
 	$().setLoadBar("loadingBar", 400);
