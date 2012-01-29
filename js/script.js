@@ -257,8 +257,28 @@ function RebuildRing()
 	}
 }
 
+var clicksound;
+var transpose;
+var colourchange;
 $(document).ready(function(){
 
+	var music = document.createElement('audio');
+	music.setAttribute('src', 'ogg/music.ogg');
+	music.volume=0.3;
+	music.play();
+	
+	clicksound = document.createElement('audio');
+	clicksound.setAttribute('src', 'ogg/click.ogg');
+	clicksound.load();
+	
+	transpose = document.createElement('audio');
+	transpose.setAttribute('src', 'ogg/transpose.ogg');
+	transpose.load();
+	
+	colourchange = document.createElement('audio');
+	colourchange.setAttribute('src', 'ogg/colourchange.ogg');
+	colourchange.load();
+	
 	$("#playground").playground({height: PLAYGROUND_HEIGHT, width: PLAYGROUND_WIDTH});
 	
 	//add the ring group
@@ -291,12 +311,15 @@ $(document).ready(function(){
 				
 				setSnakeRotation(thisIdx);
 				setSnakeRotation(snakeToSwap);
+				
+				transpose.play();
 			} else {
 				if($("#tile"+snakeToSwap).hasClass("flipped")) {
 					$("#tile"+snakeToSwap).removeClass("flipped");
 				} else {
 					$("#tile"+snakeToSwap).addClass("flipped");
 				}
+				colourchange.play();
 				setSnakeRotation(thisIdx);
 				setSnakeRotation(snakeToSwap);
 			}
