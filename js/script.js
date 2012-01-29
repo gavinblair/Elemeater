@@ -27,30 +27,6 @@ var snakeanimations = {
 		rate: 0,
 		type: $.gameQuery.ANIMATION_VERTICAL
 	}),
-	'water' : new $.gameQuery.Animation({ 
-		imageURL: "img/snakes.png",
-		numberOfFrame: 1,
-		delta: 100,
-		rate: 0,
-		offsety: 0*100,
-		type: $.gameQuery.ANIMATION_HORIZONTAL
-	}),
-	'fire' : new $.gameQuery.Animation({ 
-		imageURL: "img/snakes.png",
-		numberOfFrame: 1,
-		delta: 100,
-		rate: 0,
-		offsety: 1*100,
-		type: $.gameQuery.ANIMATION_HORIZONTAL
-	}),
-	'earth' : new $.gameQuery.Animation({ 
-		imageURL: "img/snakes.png",
-		numberOfFrame: 1,
-		delta: 100,
-		rate: 0,
-		offsety: 2*100,
-		type: $.gameQuery.ANIMATION_HORIZONTAL
-	}),
 	'waterwater' : new $.gameQuery.Animation({ 
 		imageURL: "img/snakes.png",
 		numberOfFrame: 1,
@@ -59,7 +35,7 @@ var snakeanimations = {
 		offsety: 0*100,
 		type: $.gameQuery.ANIMATION_HORIZONTAL
 	}),
-	'waterfire' : new $.gameQuery.Animation({ 
+	'earth' : new $.gameQuery.Animation({ 
 		imageURL: "img/snakes.png",
 		numberOfFrame: 1,
 		delta: 100,
@@ -67,7 +43,7 @@ var snakeanimations = {
 		offsety: 1*100,
 		type: $.gameQuery.ANIMATION_HORIZONTAL
 	}),
-	'earthwater' : new $.gameQuery.Animation({ 
+	'earthearth' : new $.gameQuery.Animation({ 
 		imageURL: "img/snakes.png",
 		numberOfFrame: 1,
 		delta: 100,
@@ -75,7 +51,7 @@ var snakeanimations = {
 		offsety: 2*100,
 		type: $.gameQuery.ANIMATION_HORIZONTAL
 	}),
-	'firefire' : new $.gameQuery.Animation({ 
+	'earthwater' : new $.gameQuery.Animation({ 
 		imageURL: "img/snakes.png",
 		numberOfFrame: 1,
 		delta: 100,
@@ -83,7 +59,7 @@ var snakeanimations = {
 		offsety: 3*100,
 		type: $.gameQuery.ANIMATION_HORIZONTAL
 	}),
-	'earthfire' : new $.gameQuery.Animation({ 
+	'fire' : new $.gameQuery.Animation({ 
 		imageURL: "img/snakes.png",
 		numberOfFrame: 1,
 		delta: 100,
@@ -91,12 +67,36 @@ var snakeanimations = {
 		offsety: 4*100,
 		type: $.gameQuery.ANIMATION_HORIZONTAL
 	}),
-	'earthearth' : new $.gameQuery.Animation({ 
+	'earthfire' : new $.gameQuery.Animation({ 
 		imageURL: "img/snakes.png",
 		numberOfFrame: 1,
 		delta: 100,
 		rate: 0,
 		offsety: 5*100,
+		type: $.gameQuery.ANIMATION_HORIZONTAL
+	}),
+	'firefire' : new $.gameQuery.Animation({ 
+		imageURL: "img/snakes.png",
+		numberOfFrame: 1,
+		delta: 100,
+		rate: 0,
+		offsety: 6*100,
+		type: $.gameQuery.ANIMATION_HORIZONTAL
+	}),
+	'water' : new $.gameQuery.Animation({ 
+		imageURL: "img/snakes.png",
+		numberOfFrame: 1,
+		delta: 100,
+		rate: 0,
+		offsety: 7*100,
+		type: $.gameQuery.ANIMATION_HORIZONTAL
+	}),
+	'waterfire' : new $.gameQuery.Animation({ 
+		imageURL: "img/snakes.png",
+		numberOfFrame: 1,
+		delta: 100,
+		rate: 0,
+		offsety: 8*100,
 		type: $.gameQuery.ANIMATION_HORIZONTAL
 	}),
 };
