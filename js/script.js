@@ -536,7 +536,9 @@ function RebuildRing()
 		if(thetype == "ouroborous") {
 			$("#tile"+i).unbind();
 		}
-		
+		if($(".ouroborous").length == SNAKES_IN_RING) {
+			endgame();
+		}
 		setSnakeRotation(i);
 	}
 }
