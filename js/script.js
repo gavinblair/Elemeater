@@ -217,6 +217,7 @@ function RebuildRing()
 					break;
 			};
 
+			$("#snake"+i).remove();
 			$("#tile"+i).addSprite("snake"+i, {animation: thesnake, width: w, height: h});
 			$("#tile"+i).attr("rel", i).addClass("tile");
 
