@@ -313,6 +313,9 @@ function ConsumeMatches()
 
 function RebuildRing()
 {
+
+	//remove all glows
+	$(".glow").remove();
 	for(var i  = 0; i < SNAKES_IN_RING; i++) {
 		var pos = getPosOfSnake(i+(SNAKES_IN_RING/2));
 		
@@ -417,6 +420,19 @@ function RebuildRing()
 
 		setSnakeRotation(i);
 	}
+}
+
+function glowsnake(idx){
+	//single or double?
+	var glow;
+	if(ringTiles[idx].left == EMPTY || ringTiles[idx].right == EMPTY) {
+		glow = glows.single;
+	} else if(ringTiles[idx].left != EMPTY && ringTiles[idx].right != EMPTY) {
+		glow = glows.double;
+	}
+	$("#tile"+idx).addSprite("glow"+idx, {animation: glow, width: 100, height: 100});
+	$("#glow"+idx).addClass("glow");
+	setSnakeRotation(idx);
 }
 
 var clicksound;
