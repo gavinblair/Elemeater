@@ -107,6 +107,10 @@ function setSnakeRotation(idx)
 	var rotationAngle = 360 / SNAKES_IN_RING;
 	var rot = rotationAngle * idx * -1;
 	var snake = $("#tile"+idx+" .sprite");
+	
+	if($("#tile"+idx).hasClass("flipped")) {
+		rot+=180;
+	}
 
 	snake.css("transform", "rotate("+rot+"deg)");
 	snake.css("-ms-transform", "rotate("+rot+"deg)"); /* IE 9 */
@@ -122,6 +126,10 @@ function setSnakeScaledRotation(idx, scalar)
 	var rot = rotationAngle * idx * -1;
 	var snake = $("#tile"+idx+" .sprite");
 
+	if($("#tile"+idx).hasClass("flipped")) {
+		rot+=180;
+	}
+	
 	snake.css("transform", "rotate("+rot+"deg) scale("+scalar+", "+scalar+")");
 	snake.css("-ms-transform", "rotate("+rot+"deg) scale("+scalar+", "+scalar+")"); /* IE 9 */
 	snake.css("-moz-transform", "rotate("+rot+"deg) scale("+scalar+", "+scalar+")"); /* Firefox */
@@ -160,10 +168,15 @@ function RebuildRing()
 {
 	for(var i  = 0; i < SNAKES_IN_RING; i++) {
 		var pos = getPosOfSnake(i+(SNAKES_IN_RING/2));
-		$("#ring").addGroup("tile"+i, { height: 100, width: 100});	
+		
+		if($("#tile"+i).length == 0) {
+			$("#ring").addGroup("tile"+i, { height: 100, width: 100});	
+		}
 		//center the tile
-		$("#tile"+i).css("top", (300+pos.x)+"px").css("left", (300+pos.y)+"px");
 		//now move it based on pos.y and pos.x
+		$("#tile"+i).css("top", (300+pos.x)+"px").css("left", (300+pos.y)+"px");
+		
+		
 		if(i == 0) {
 			//big tail
 			$("#tile"+i).addSprite("snake"+i, {animation: snakeanimations.bigtail, width: 100, height: 100});
@@ -271,10 +284,16 @@ $(document).ready(function(){
 				setSnakeRotation(thisIdx);
 				setSnakeRotation(snakeToSwap);
 			} else {
-				$("#snake"+snakeToSwap).css("border", "1px solid red");
+				if($("#tile"+snakeToSwap).hasClass("flipped")) {
+					$("#tile"+snakeToSwap).removeClass("flipped");
+				} else {
+					$("#tile"+snakeToSwap).addClass("flipped");
+				}
+				setSnakeRotation(thisIdx);
+				setSnakeRotation(snakeToSwap);
 			}
 
-			$(".tile.selected").removeClass();
+			$(".tile.selected").removeClass('.selected');
 			RebuildRing();
 			snakeToSwap = -1;
 		}
